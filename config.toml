@@ -90,7 +90,7 @@ disqusShortname = ""
     [[params.tiles.showcase]]
       title = "2016 US presidential elections"
       subtitle = "California contributors"
-      image = "pic01.jpg"
+      image = "US_pres.jpg"
       url = "blogs/aliquam"
 
     [[params.tiles.showcase]]
