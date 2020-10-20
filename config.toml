@@ -81,7 +81,6 @@ disqusShortname = ""
     subtitle = "MY PORTFOLIO WEBSITE RELEASED UNDER THE CREATIVE COMMONS."
     buttonText = "Get Started"
 
-
   # Tiles Section
   [params.tiles]
     enable = true
@@ -91,7 +90,7 @@ disqusShortname = ""
       title = "2016 US presidential elections"
       subtitle = "California contributors"
       image = "US_pres.jpg"
-      url = "blogs/aliquam"
+      url = "projects/project1"
 
     [[params.tiles.showcase]]
       title = "Ciao"

@@ -1,0 +1,165 @@
+---
+title: 'Session 2: Homework 1'
+author: "Group 33"
+date: "`r Sys.Date()"
+output:
+  html_document:
+    theme: flatly
+    highlight: zenburn
+    number_sections: yes
+    toc: yes
+    toc_float: yes
+    code_folding: show
+  pdf_document:
+    toc: yes
+---
+
+```{r, setup, echo=FALSE}
+knitr::opts_chunk$set(
+  message = FALSE, 
+  warning = FALSE, 
+  tidy=FALSE,     # display code as typed
+  size="small")   # slightly smaller font for code
+options(digits = 3)
+
+# default figure size
+knitr::opts_chunk$set(
+  fig.width=6.75, 
+  fig.height=6.75,
+  fig.align = "center"
+)
+```
+
+# Challenge 2: 2016 California Contributors plots
+
+As discussed in class, I would like you to reproduce the plot that shows the top ten cities in highest amounts raised in political contributions in California during the 2016 US Presidential election.
+
+
+
+```{r challenge2, echo=FALSE, out.width="100%"}
+knitr::include_graphics(here::here("images", "challenge2.png"), error = FALSE)
+```
+
+
+To get this plot, you must join two dataframes; the one you have with all contributions, and data that can translate zipcodes to cities.
+You can find a file with all US zipcodes, e.g., here http://www.uszipcodelist.com/download.html. 
+
+The easiest way would be to create two plots and then place one next to each other. For this, you will need the `patchwork` package.
+https://cran.r-project.org/web/packages/patchwork/index.html
+
+While this is ok, what if one asked you to create the same plot for the top 10 candidates and not just the top two? The most challenging part is how to reorder within categories, and for this you will find Julia Silge's post on [REORDERING AND FACETTING FOR GGPLOT2](https://juliasilge.com/blog/reorder-within/) useful.
+
+
+
+# Make sure you use vroom() as it is significantly faster than read.csv()
+#Challenge 2
+
+library(tidyverse)  # Load ggplot2, dplyr, and all the other tidyverse packages
+library(mosaic)
+library(ggthemes)
+library(lubridate)
+library(fivethirtyeight)
+library(here)
+library(skimr)
+library(janitor)
+library(vroom)
+library(tidyquant)
+library(rvest)    # scrape websites
+library(purrr)  
+library(lubridate)
+library(patchwork)
+
+#Loading Contributors file
+setwd("~/Work/MSc Finance/LBS MFA/Courses/Data Analytics/Session 2/session2-workshop1/data")
+CA_2016 = read.csv("CA_contributors_2016.csv")
+clean_names(CA_2016)
+glimpse(CA_2016)
+
+#Loading Zip files
+Zip = read.csv("zip_code_database.csv")
+glimpse(Zip)
+Zip[,1:3]
+
+my_zip = Zip %>% select(1,3)
+
+join = inner_join(CA_2016,my_zip)
+
+my_CA_2016 = join %>% select(1,2,5)
+my_CA_2016
+
+#1 Clinton
+Clinton <- my_CA_2016 %>% filter(cand_nm == "Clinton, Hillary Rodham") %>% group_by(primary_city) %>% summarise(tot_cont = sum(contb_receipt_amt)) %>% arrange(desc(tot_cont))
+Clinton
+
+p_clinton <- ggplot(Clinton[1:10,], aes(x = tot_cont, y = reorder(primary_city, tot_cont))) + geom_bar(stat="identity", fill="blue") + scale_x_continuous(labels=scales::dollar_format()) + labs(x="", y="") + theme_bw() + theme(plot.title = element_text(hjust = 0.5)) + facet_wrap(~"Clinton, Hillary Rodham")+ theme(strip.text =element_text(size=14))
+ 
+p_clinton
+
+#2 Sanders
+Sanders <- my_CA_2016 %>% filter(cand_nm == "Sanders, Bernard") %>% group_by(primary_city) %>% summarise(tot_cont = sum(contb_receipt_amt)) %>% arrange(desc(tot_cont))
+
+p_sanders <- ggplot(Sanders[1:10,], aes(x = tot_cont, y = reorder(primary_city, tot_cont))) + geom_bar(stat="identity", fill="blue") + scale_x_continuous(labels=scales::dollar_format()) + labs(x = "", y =  "") + theme_bw() + theme(plot.title = element_text(hjust = 0.5)) + facet_wrap(~"Sanders, Bernard")+ theme(strip.text =element_text(size=14))
+
+p_sanders
+
+#3 Trump
+Trump <- my_CA_2016 %>% filter(cand_nm == "Trump, Donald J.") %>% group_by(primary_city) %>% summarise(tot_cont = sum(contb_receipt_amt)) %>% arrange(desc(tot_cont))
+
+p_trump <- ggplot(Trump[1:10,], aes(x = tot_cont, y = reorder(primary_city, tot_cont))) + geom_bar(stat="identity", fill="red") + scale_x_continuous(labels=scales::dollar_format()) + labs(x="", y="") + theme_bw() + theme(plot.title = element_text(hjust = 0.5)) + facet_wrap(~"Trump, Donald J.")+ theme(strip.text =element_text(size=14))
+
+p_trump
+
+#4 Cruz
+Cruz <- my_CA_2016 %>% filter(cand_nm == "Cruz, Rafael Edward 'Ted'") %>% group_by(primary_city) %>% summarise(tot_cont = sum(contb_receipt_amt)) %>% arrange(desc(tot_cont))
+
+p_cruz <- ggplot(Cruz[1:10,], aes(x = tot_cont, y = reorder(primary_city, tot_cont))) + geom_bar(stat="identity", fill="red") + scale_x_continuous(labels=scales::dollar_format()) + labs(x="", y="") + theme_bw() + theme(plot.title = element_text(hjust = 0.5)) + facet_wrap(~"Cruz, Rafael Edward 'Ted'")+ theme(strip.text =element_text(size=14))
+
+p_cruz
+
+#5 Rubio
+Rubio <- my_CA_2016 %>% filter(cand_nm == "Rubio, Marco") %>% group_by(primary_city) %>% summarise(tot_cont = sum(contb_receipt_amt)) %>% arrange(desc(tot_cont))
+
+p_rubio <- ggplot(Clinton[1:10,], aes(x = tot_cont, y = reorder(primary_city, tot_cont))) + geom_bar(stat="identity", fill="red") + scale_x_continuous(labels=scales::dollar_format()) + labs(x="", y="") + theme_bw() + theme(plot.title = element_text(hjust = 0.5)) + facet_wrap(~"Rubio, Marco")+ theme(strip.text =element_text(size=14))
+
+p_rubio
+
+#6 Bush
+Bush <- my_CA_2016 %>% filter(cand_nm == "Bush, Jeb") %>% group_by(primary_city) %>% summarise(tot_cont = sum(contb_receipt_amt)) %>% arrange(desc(tot_cont))
+
+p_bush <- ggplot(Clinton[1:10,], aes(x = tot_cont, y = reorder(primary_city, tot_cont))) + geom_bar(stat="identity", fill="red") + scale_x_continuous(labels=scales::dollar_format()) + labs(x="", y="") + theme_bw() + theme(plot.title = element_text(hjust = 0.5)) + facet_wrap(~"Bush, Jeb")+ theme(strip.text =element_text(size=14))
+
+p_bush
+
+#7 Carson
+Carson <- my_CA_2016 %>% filter(cand_nm == "Carson, Benjamin S.") %>% group_by(primary_city) %>% summarise(tot_cont = sum(contb_receipt_amt)) %>% arrange(desc(tot_cont))
+
+p_carson <- ggplot(Clinton[1:10,], aes(x = tot_cont, y = reorder(primary_city, tot_cont))) + geom_bar(stat="identity", fill="red") + scale_x_continuous(labels=scales::dollar_format()) + labs(x="", y="") + theme_bw() + theme(plot.title = element_text(hjust = 0.5)) + facet_wrap(~"Carson, Benjamin S.")+ theme(strip.text =element_text(size=14))
+
+p_carson
+
+#8 Kasich
+Kasich <- my_CA_2016 %>% filter(cand_nm == "Kasich, John R.") %>% group_by(primary_city) %>% summarise(tot_cont = sum(contb_receipt_amt)) %>% arrange(desc(tot_cont))
+
+p_kasich <- ggplot(Kasich[1:10,], aes(x = tot_cont, y = reorder(primary_city, tot_cont))) + geom_bar(stat="identity", fill="red") + scale_x_continuous(labels=scales::dollar_format()) + labs(x="", y="") + theme_bw() + theme(plot.title = element_text(hjust = 0.5)) + facet_wrap(~"Kasich, John R.")+ theme(strip.text =element_text(size=14))
+
+p_kasich
+
+#9 Fiorina
+Fiorina <- my_CA_2016 %>% filter(cand_nm == "Fiorina, Carly") %>% group_by(primary_city) %>% summarise(tot_cont = sum(contb_receipt_amt)) %>% arrange(desc(tot_cont))
+
+p_fiorina <- ggplot(Clinton[1:10,], aes(x = tot_cont, y = reorder(primary_city, tot_cont))) + geom_bar(stat="identity", fill= "red") + scale_x_continuous(labels=scales::dollar_format()) + labs(x="", y="") + theme_bw() + theme(plot.title = element_text(hjust = 0.5)) + facet_wrap(~"Fiorina, Carly")+ theme(strip.text =element_text(size=14))
+
+p_fiorina
+
+#10 Paul
+Paul <- my_CA_2016 %>% filter(cand_nm == "Paul, Rand") %>% group_by(primary_city) %>% summarise(tot_cont = sum(contb_receipt_amt)) %>% arrange(desc(tot_cont))
+
+p_paul <- ggplot(Paul[1:10,], aes(x = tot_cont, y = reorder(primary_city, tot_cont))) + geom_bar(stat="identity", fill="red") + scale_x_continuous(labels=scales::dollar_format()) + labs(x="", y="") + theme_bw() + theme(plot.title = element_text(hjust = 0.5)) + facet_wrap(~"Paul, Rand") + theme(strip.text =element_text(size=14))
+
+p_paul
+
+# Placing plots together
+
+p_final <- (p_clinton | p_sanders | p_trump | p_cruz | p_rubio) / (p_bush | p_carson | p_kasich | p_fiorina | p_paul) + plot_annotation(title = "Where did candidates raise most money?", theme=theme(plot.title = element_text(size = 20, face="bold"))) + plot_annotation(caption = "Amount raised", theme=theme(plot.caption = element_text(size = 16, face="bold", hjust = 0.5))) + facet_wrap(~"Clinton, Hillary Rodham")+ theme(strip.text =element_text(size=16))
+
+p_final
