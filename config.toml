@@ -1,5 +1,5 @@
 # Site settings
-baseURL = "https://hugo-huerealvarado-lbs.netlify.app/"
+baseURL = "https://hugo-huerealvarado.netlify.app/"
 languageCode = "en-us"
 title = "Hugo's Portfolio for Data Analytics"
 theme = "forty"
