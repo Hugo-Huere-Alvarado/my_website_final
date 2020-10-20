@@ -1,5 +1,5 @@
 # Site settings
-baseURL = "https://hugo-huerealvarado-lbs.netlify.app"
+baseURL = "https://hugo-huerealvarado-lbs.netlify.app/"
 languageCode = "en-us"
 title = "Hugo's Portfolio for Data Analytics"
 theme = "forty"
@@ -37,8 +37,8 @@ disqusShortname = ""
 
   # Navigation Section
   [params.navigation]
-    title = "HUGO"
-    subtitle = "PORTFOLIO WEBSITE"
+    title = "Hugo"
+    subtitle = "Portfolio website"
     menu = "Menu"
     # Optional logo as brand stored in img/
     # logo = "logo.png"
@@ -46,18 +46,14 @@ disqusShortname = ""
     [[params.navigation.links]]
       name = "Home"
       url = "#"
-
+      
     [[params.navigation.links]]
-      name = "Blogs"
-      url = "blogs"
-
-    [[params.navigation.links]]
-      name = "Generic Blog"
+      name = "About me"
       url = "blogs/ipsum"
-
+      
     [[params.navigation.links]]
-      name = "Elements"
-      url = "elements.html"
+      name = "My projects"
+      url = "blogs"
 
     # Add custom links here by uncommenting code below. To remove links just delete
     # the [[params.navigation.links]] map associated with that link. Copy and paste
@@ -67,14 +63,14 @@ disqusShortname = ""
     #    url = "UrlOfLink"
 
     # Button Style 1
-    [[params.navigation.button1]]
-      name = "Get Started"
-      url = "blogs"
+    #[[params.navigation.button1]]
+      #name = "Get Started"
+      #url = "blogs"
 
     # Button Style 2
-    [[params.navigation.button2]]
-      name = "Log In"
-      url = "#"
+    #[[params.navigation.button2]]
+     # name = "Log In"
+      #url = "#"
 
 
   # Banner section
@@ -92,13 +88,13 @@ disqusShortname = ""
     # Display your showcases here.
     
     [[params.tiles.showcase]]
-      title = "Aliquam"
-      subtitle = "Ipsum Dolor Sit Amet"
+      title = "2016 US presidential elections"
+      subtitle = "California contributors"
       image = "pic01.jpg"
       url = "blogs/aliquam"
 
     [[params.tiles.showcase]]
-      title = "Tempus"
+      title = "Ciao"
       subtitle = "Feugiat Amet Tempus"
       image = "pic02.jpg"
       url = "blogs/tempus"
@@ -139,11 +135,7 @@ disqusShortname = ""
   [params.two]
     enable = true
     title = "Massa libero"
-    subtitle = """Nullam et orci eu lorem consequat tincidunt vivamus et sagittis libero. 
-    Mauris aliquet magna magna sed nunc rhoncus pharetra. 
-    Pellentesque condimentum sem. In efficitur ligula tate urna. Maecenas laoreet massa vel lacinia pellentesque lorem ipsum dolor. 
-    Nullam et orci eu lorem consequat tincidunt. Vivamus et sagittis libero.
-    Mauris aliquet magna magna sed nunc rhoncus amet pharetra et feugiat tempus."""
+    subtitle = "AA"
     buttonText = "Get Started"
     url = "blogs"
 
@@ -187,7 +179,7 @@ disqusShortname = ""
   # Footer section
   [params.footer]
     enable = true
-    copyright = "Hugo Huere Alvarado"
+    copyright = "Hugo Huere Alvarado & Co. ltd"
 
     # Uses font awesome icons
     [[params.footer.social]]
