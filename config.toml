@@ -37,8 +37,8 @@ disqusShortname = ""
 
   # Navigation Section
   [params.navigation]
-    title = "Hugo"
-    subtitle = "Portfolio website"
+    title = "Hugo Huere Alvarado"
+    subtitle = "Data Analytics"
     menu = "Menu"
     # Optional logo as brand stored in img/
     # logo = "logo.png"
@@ -78,7 +78,7 @@ disqusShortname = ""
     # To change the background image on the homepage banner, replace 'banner.jpg' in
     # the 'static/img' folder.
     title = "Hi, my name is Hugo"
-    subtitle = "MY PORTFOLIO WEBSITE RELEASED UNDER THE CREATIVE COMMONS."
+    subtitle = "MY DATA ANALYTICS WEBSITE RELEASED UNDER THE CREATIVE COMMONS"
     buttonText = "Get Started"
 
   # Tiles Section
@@ -87,40 +87,40 @@ disqusShortname = ""
     # Display your showcases here.
     
     [[params.tiles.showcase]]
-      title = "2016 US presidential elections"
-      subtitle = "California contributors"
-      image = "US_pres.jpg"
+      title = "AIRBNB MEXICO CITY"
+      subtitle = "How much will a couple spend to stay four nights in Mexico City?"
+      image = "MXN.jpg"
       url = "projects/project1"
 
     [[params.tiles.showcase]]
-      title = "Ciao"
-      subtitle = "Feugiat Amet Tempus"
+      title = "COVID-19 STATISTICS"
+      subtitle = "Analysis by co-morbidities and ICU admission"
       image = "pic02.jpg"
       url = "blogs/tempus"
 
     [[params.tiles.showcase]]
-      title = "Magna"
-      subtitle = "Lorem Etiam Nullam"
+      title = "STEVEN SPIELBERG VS TIM BURTON"
+      subtitle = "Who has got the best IMDB ratings?"
       image = "pic03.jpg"
       url = "blogs/magna"
 
     [[params.tiles.showcase]]
-      title = "Ipsum"
-      subtitle = "Nisl Sed Aliquam"
-      image = "pic04.jpg"
+      title = "2016 US PRESIDENTIAL ELECTIONS"
+      subtitle = "California contributors by candidate"
+      image = "US_pres.jpg"
       url = "blogs/ipsum"
 
-    [[params.tiles.showcase]]
-      title = "Consequat"
-      subtitle = "Ipsum Dolor Sit Amet"
-      image = "pic05.jpg"
-      url = "blogs/ipsum"
+    #[[params.tiles.showcase]]
+      #title = "Consequat"
+      #subtitle = "Ipsum Dolor Sit Amet"
+      #image = "pic05.jpg"
+      #url = "blogs/ipsum"
 
-    [[params.tiles.showcase]]
-      title = "Etiam"
-      subtitle = "Feugiat Amet Tempus"
-      image = "pic06.jpg"
-      url = "blogs/ipsum"
+    #[[params.tiles.showcase]]
+      #title = "Etiam"
+      #subtitle = "Feugiat Amet Tempus"
+      #image = "pic06.jpg"
+      #url = "blogs/ipsum"
     # You can make more showcases by copy and pasting the code above
 
   [params.blog]
@@ -133,9 +133,9 @@ disqusShortname = ""
   # Section Type Two
   [params.two]
     enable = true
-    title = "Massa libero"
-    subtitle = "AA"
-    buttonText = "Get Started"
+    title = "About me"
+    subtitle = "Master in Financial Analysis (MFA) 2021 Student at London Business School"
+    buttonText = "Download CV"
     url = "blogs"
 
 
@@ -173,7 +173,7 @@ disqusShortname = ""
     title = "Address"
     street = "Regents Park"
     city = "London NW1 4SA"
-    country = "United Kingdon"
+    country = "United Kingdom"
 
   # Footer section
   [params.footer]
