@@ -134,7 +134,7 @@ disqusShortname = ""
   [params.two]
     enable = true
     title = "About me"
-    subtitle = "Currently, reading for the Master in Financial Analysis (MFA) at London Business School. \r\n I am a 22-year-old first-generation university graduate from Milan with Peruvian roots and working experience in Frankfurt where I was engaged in the investment banking (M&A) field. \r\n Next to a genuine interest in different aspects of finance, I have a relevant international exposure and a global mindset that are matched by practical communication skills in four European languages, i.e. Italian, Spanish, English and German."
+    subtitle = "Currently, reading for the Master in Financial Analysis (MFA) at London Business School. \n I am a 22-year-old first-generation university graduate from Milan with Peruvian roots and working experience in Frankfurt where I was engaged in the investment banking (M&A) field. \r\n Next to a genuine interest in different aspects of finance, I have a relevant international exposure and a global mindset that are matched by practical communication skills in four European languages, i.e. Italian, Spanish, English and German."
     buttonText = "Download CV"
     url = "blogs/CV/CV_Hugo Huere Alvarado.pdf"
 
@@ -167,14 +167,16 @@ disqusShortname = ""
 
     [[params.contact.phone]]
     title = "Phone"
-    phone = "+44 (0)77 2313 2115"
-    home = "+39 333 614 7274"
+    phone = "UK: +44 (0)77 2313 2115"
 
+    [[params.contact.phone]]
+    phone = "IT: +39 333 614 7274"
+    
     [[params.contact.address]]
     title = "Address"
     name = "London Business School"
     street = "Regents Park"
-    city = "London NW1 4SA"
+    city = "London - NW1 4SA"
     country = "United Kingdom"
 
   # Footer section
