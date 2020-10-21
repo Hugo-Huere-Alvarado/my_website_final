@@ -1,7 +1,12 @@
+---
+output:
+  pdf_document: default
+  html_document: default
+  word_document: default
+---
 # Challenge 2: 2016 California Contributors plots
 
 As discussed in class, I would like you to reproduce the plot that shows the top ten cities in highest amounts raised in political contributions in California during the 2016 US Presidential election.
-
 
 
 ```{r challenge2, echo=FALSE, out.width="100%"}
@@ -18,8 +23,11 @@ https://cran.r-project.org/web/packages/patchwork/index.html
 While this is ok, what if one asked you to create the same plot for the top 10 candidates and not just the top two? The most challenging part is how to reorder within categories, and for this you will find Julia Silge's post on [REORDERING AND FACETTING FOR GGPLOT2](https://juliasilge.com/blog/reorder-within/) useful.
 
 
-
+```{r, load_CA_data, warnings= FALSE, message=FALSE}
 # Make sure you use vroom() as it is significantly faster than read.csv()
+
+```
+
 #Challenge 2
 
 library(tidyverse)  # Load ggplot2, dplyr, and all the other tidyverse packages
@@ -34,21 +42,27 @@ library(vroom)
 library(tidyquant)
 library(rvest)    # scrape websites
 library(purrr)  
-library(lubridate)
+library(lubridate) #to handle dates
+install.packages("patchwork")
 library(patchwork)
 
 #Loading Contributors file
-setwd("~/Work/MSc Finance/LBS MFA/Courses/Data Analytics/Session 2/session2-workshop1/data")
-CA_2016 = read.csv("CA_contributors_2016.csv")
-clean_names(CA_2016)
-glimpse(CA_2016)
+CA_2016 = read.csv("CA_contributors_2016.csv") %>%
+  clean_names() %>%
+  glimpse(CA_2016)
+
+#Highest individual contributions
+CA_2016 %>%
+  arrange(desc(contb_receipt_amt)) 
 
 #Loading Zip files
 Zip = read.csv("zip_code_database.csv")
+Zip
 glimpse(Zip)
 Zip[,1:3]
 
 my_zip = Zip %>% select(1,3)
+my_zip
 
 join = inner_join(CA_2016,my_zip)
 
@@ -59,7 +73,7 @@ my_CA_2016
 Clinton <- my_CA_2016 %>% filter(cand_nm == "Clinton, Hillary Rodham") %>% group_by(primary_city) %>% summarise(tot_cont = sum(contb_receipt_amt)) %>% arrange(desc(tot_cont))
 Clinton
 
-p_clinton <- ggplot(Clinton[1:10,], aes(x = tot_cont, y = reorder(primary_city, tot_cont))) + geom_bar(stat="identity", fill="blue") + scale_x_continuous(labels=scales::dollar_format()) + labs(x="", y="") + theme_bw() + theme(plot.title = element_text(hjust = 0.5)) + facet_wrap(~"Clinton, Hillary Rodham")+ theme(strip.text =element_text(size=14))
+fp_clinton <- ggplot(Clinton[1:10,], aes(x = tot_cont, y = reorder(primary_city, tot_cont))) + geom_bar(stat="identity", fill="blue") + scale_x_continuous(labels=scales::dollar_format()) + labs(x="", y="") + theme_bw() + theme(plot.title = element_text(hjust = 0.5)) + facet_wrap(~"Clinton, Hillary Rodham")+ theme(strip.text =element_text(size=14))
  
 p_clinton
 
@@ -94,7 +108,7 @@ p_rubio
 #6 Bush
 Bush <- my_CA_2016 %>% filter(cand_nm == "Bush, Jeb") %>% group_by(primary_city) %>% summarise(tot_cont = sum(contb_receipt_amt)) %>% arrange(desc(tot_cont))
 
-p_bush <- ggplot(Clinton[1:10,], aes(x = tot_cont, y = reorder(primary_city, tot_cont))) + geom_bar(stat="identity", fill="red") + scale_x_continuous(labels=scales::dollar_format()) + labs(x="", y="") + theme_bw() + theme(plot.title = element_text(hjust = 0.5)) + facet_wrap(~"Bush, Jeb")+ theme(strip.text =element_text(size=14))
+p_bush <- ggplot(Clinton[1:10,], aes(x = tot_cont, y = reorder(primary_city, tot_cont))) + geom_bar(stat="identity", fill="red") + scale_x_continuous(labels=scales::dollar_format()) + labs(x="", y="") + theme_bw() + theme(plot.title = element_text(hjust = 0.5)) + facet_wrap(~"Bush, Jeb)+ theme(strip.text =element_text(size=14))
 
 p_bush
 
