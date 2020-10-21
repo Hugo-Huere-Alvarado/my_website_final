@@ -76,7 +76,7 @@ Airbnb listings data was scraped from airbnb.com
 
 ## Inspect the data
 
-```{r rows_and_columns}
+```{r rows_and_columns, echo = FALSE}
 glimpse(listings)
 skim(listings)
 ```
@@ -89,9 +89,6 @@ tidy_listings <- listings %>%
 dplyr::select(host_is_superhost, neighbourhood_cleansed, latitude, longitude, is_location_exact, property_type, room_type,
               bathrooms, bedrooms, beds, square_feet, price, cleaning_fee, extra_people, number_of_reviews, review_scores_rating,
               cancellation_policy, availability_365, amenities, host_identity_verified, minimum_nights, guests_included)
-
-glimpse(tidy_listings)
-skim(tidy_listings)
 
 ```
 Looking through the raw data set, We will drop variable "square_feet" because most airbnb houses (21758) do not provide it so it will not be a meaningful predictive variable and a large amount of NA values will influence our analysis later.
@@ -158,10 +155,6 @@ tidy_listings <- tidy_listings %>%
   mutate(price_4_nights = case_when(
     guests_included >= 2 ~ 4*price + cleaning_fee,
     guests_included < 2 ~ 4*price + cleaning_fee + 4*extra_people))
-
-# Look at data set
-glimpse(tidy_listings)
-skim(tidy_listings)
 
 ```
 Now, variables are manipulated and adjusted.
