@@ -168,9 +168,11 @@ disqusShortname = ""
     [[params.contact.phone]]
     title = "Phone"
     phone = "+44 (0)77 2313 2115"
+    home = "+39 333 614 7274"
 
     [[params.contact.address]]
     title = "Address"
+    name = "London Business School"
     street = "Regents Park"
     city = "London NW1 4SA"
     country = "United Kingdom"
