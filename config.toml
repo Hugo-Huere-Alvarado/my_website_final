@@ -134,7 +134,7 @@ disqusShortname = ""
   [params.two]
     enable = true
     title = "About me"
-    subtitle = "Master in Financial Analysis (MFA) 2021 Student at London Business School"
+    subtitle = "Currently reading for the Master in Financial Analysis (MFA) 2021 Student at London Business School. \r I am a 22-year-old first-generation university graduate from Milan with Peruvian roots and working experience in Frankfurt where I was engaged in the investment banking (M&A) field. \r Next to a genuine interest in different aspects of finance, I have a relevant international exposure and a global mindset that are matched by practical communication skills in four European languages, i.e. Italian, Spanish, English and German."
     buttonText = "Download CV"
     url = "blogs/CV/CV_Hugo Huere Alvarado.pdf"
 
