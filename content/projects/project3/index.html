@@ -1,14 +1,14 @@
 ---
 title: "IMDB Ratings: Steven Spielberg vs Tim Burton"
 date: '2020-10-11'
-description: STEVEN SPIELBERG VS TIM BURTON
-image: IMDB.jpg
-draft: no
-keywords: ''
-slug: index
-categories:
-- ""
-- ""
+output:
+  html_document:
+    theme: flatly
+    highlight: zenburn
+    number_sections: yes
+    toc: yes
+    toc_float: yes
+    code_folding: show
 ---
 
 
@@ -354,16 +354,16 @@ null_dist</code></pre>
 <pre><code>## # A tibble: 1,000 x 2
 ##    replicate    stat
 ##        &lt;int&gt;   &lt;dbl&gt;
-##  1         1 -0.184 
-##  2         2 -0.0566
-##  3         3  0.0239
-##  4         4 -0.116 
-##  5         5  0.224 
-##  6         6 -0.0514
-##  7         7  0.154 
-##  8         8 -0.0722
-##  9         9  0.0889
-## 10        10  0.185 
+##  1         1  0.289 
+##  2         2 -0.270 
+##  3         3 -0.119 
+##  4         4  0.117 
+##  5         5  0.463 
+##  6         6 -0.0982
+##  7         7  0.0291
+##  8         8  0.221 
+##  9         9  0.0369
+## 10        10  0.0967
 ## # ... with 990 more rows</code></pre>
 <pre class="r"><code>ggplot(data = null_dist, aes(x = stat)) +
   geom_histogram()</code></pre>

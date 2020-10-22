@@ -1,14 +1,14 @@
 ---
 title: "IMDB Ratings: Steven Spielberg vs Tim Burton"
 date: '2020-10-11'
-description: STEVEN SPIELBERG VS TIM BURTON
-image: IMDB.jpg
-draft: no
-keywords: ''
-slug: index
-categories:
-- ""
-- ""
+output:
+  html_document:
+    theme: flatly
+    highlight: zenburn
+    number_sections: yes
+    toc: yes
+    toc_float: yes
+    code_folding: show
 ---
 
 ```{r, setup, echo=FALSE}
