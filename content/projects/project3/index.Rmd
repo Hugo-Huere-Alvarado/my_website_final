@@ -1,5 +1,5 @@
 ---
-title: "index"
+title: "IMDB Ratings: Steven Spielberg vs Tim Burton"
 date: '2020-10-11'
 description: STEVEN SPIELBERG VS TIM BURTON
 image: IMDB.jpg
@@ -7,8 +7,8 @@ draft: no
 keywords: ''
 slug: "index"
 categories:
-- ''
-- ''
+- ""
+- ""
 ---
 
 ```{r, setup, echo=FALSE}
