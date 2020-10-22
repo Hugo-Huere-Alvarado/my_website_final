@@ -1,28 +1,31 @@
 
 
 
-<pre><code>title = &quot;IMDB Ratings: Does the director play a role?&quot;
+<pre><code>title = &quot;STEVEN SPIELBERG VS TIM BURTON?&quot;
 author = &quot;Hugo Huere Alvarado&quot;
 date = &quot;2020-10-22&quot;
-output:
+output =
   html_document:
-    theme : flatly
-    highlight: zenburn
+    theme = flatly
+    highlight = zenburn
     number_sections = yes
-    toc: yes
-    toc_float: yes
-    code_folding: show</code></pre>
+    toc = yes
+    toc_float = yes
+    code_folding = show</code></pre>
 <div id="imdb-ratings-differences-between-directors" class="section level1">
 <h1>IMDB ratings: Differences between directors</h1>
 <p>This project was done to research whether the IMDB rating for blockbuster movies were influenced by the director. Before looking at any kind of data, a null hypothesis and alternative hypothesis were set up as follows:</p>
 <div id="null-hypothesis" class="section level3">
 <h3>Null Hypothesis</h3>
 <ul>
-<li>H0 there is no difference in the mean IMDB-rating for movies produced by Steven Spielberg or Tim Burton.</li>
+<li>There is no difference in the mean IMDB-rating for movies produced by Steven Spielberg or Tim Burton.</li>
 </ul>
 </div>
 <div id="alternative-hypothesis" class="section level3">
-<h3>ALternative Hypothesis</h3>
+<h3>Alternative Hypothesis</h3>
+<ul>
+<li>There is a significant difference between these mean IMDB-ratings.</li>
+</ul>
 <p>First, let us load the data into R:</p>
 <pre class="r"><code>movies &lt;- read_csv(here::here(&quot;data&quot;, &quot;movies.csv&quot;))
 glimpse(movies)</code></pre>
@@ -114,18 +117,18 @@ obs_diff</code></pre>
   calculate(stat = &quot;diff in means&quot;, order = c(TRUE, FALSE))
 null_dist</code></pre>
 <pre><code>## # A tibble: 1,000 x 2
-##    replicate     stat
-##        &lt;int&gt;    &lt;dbl&gt;
-##  1         1 -0.194  
-##  2         2 -0.00207
-##  3         3  0.102  
-##  4         4 -0.0462 
-##  5         5  0.0395 
-##  6         6  0.0525 
-##  7         7  0.112  
-##  8         8 -0.106  
-##  9         9 -0.148  
-## 10        10  0.0785 
+##    replicate    stat
+##        &lt;int&gt;   &lt;dbl&gt;
+##  1         1  0.0993
+##  2         2 -0.0696
+##  3         3  0.0733
+##  4         4  0.190 
+##  5         5 -0.0359
+##  6         6 -0.142 
+##  7         7  0.112 
+##  8         8  0.115 
+##  9         9 -0.277 
+## 10        10  0.0551
 ## # ... with 990 more rows</code></pre>
 <pre class="r"><code>ggplot(data = null_dist, aes(x = stat)) +
   geom_histogram()</code></pre>

@@ -1,15 +1,15 @@
 ```
-title = "IMDB Ratings: Does the director play a role?"
+title = "STEVEN SPIELBERG VS TIM BURTON?"
 author = "Hugo Huere Alvarado"
 date = "`r Sys.Date()`"
-output:
+output =
   html_document:
-    theme : flatly
-    highlight: zenburn
+    theme = flatly
+    highlight = zenburn
     number_sections = yes
-    toc: yes
-    toc_float: yes
-    code_folding: show
+    toc = yes
+    toc_float = yes
+    code_folding = show
 ```
 
 ```{r, setup, echo=FALSE}
@@ -54,10 +54,10 @@ library(infer)
 This project was done to research whether the IMDB rating for blockbuster movies were influenced by the director. Before looking at any kind of data, a null hypothesis and alternative hypothesis were set up as follows: 
 
 ### Null Hypothesis
-* H0 there is no difference in the mean IMDB-rating for movies produced by Steven Spielberg or Tim Burton. 
+* There is no difference in the mean IMDB-rating for movies produced by Steven Spielberg or Tim Burton. 
 
-### ALternative Hypothesis
-
+### Alternative Hypothesis
+* There is a significant difference between these mean IMDB-ratings.
 
 First, let us load the data into R:
 
