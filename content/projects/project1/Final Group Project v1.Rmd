@@ -76,10 +76,6 @@ Airbnb listings data was scraped from airbnb.com
 
 ## Inspect the data
 
-```{r rows_and_columns, echo = FALSE}
-glimpse(listings)
-skim(listings)
-```
 In the original data set, we collected 21824 values and 106 variables of which 52 are character, 15 are logical, and 38 are numerical. As we can tell, many variables are either urls or descriptions which could not be used as predictive variables. Thus we first applied glimpse and skim to look through the data set and chose what we believe could be used in the later analysis stage.
 
 ## Summary statistics of the data
@@ -160,8 +156,6 @@ tidy_listings <- tidy_listings %>%
 Now, variables are manipulated and adjusted.
 We assumed 'NA' values appear when the host has left the additional cleaning fee box blank, therefore, we set the NAs to 0. We have more than 5,000 NA values in column review_scores_ratings so we will first plot a scatterplot to see if there is a strong relationship between review score and price.
 
-
-
 ## Handling Missing values
 
 ```{r}
@@ -171,6 +165,7 @@ ggplot(tidy_listings, aes(x = review_scores_rating,
 
 cor(tidy_listings$review_scores_rating, tidy_listings$price,
     use = "complete.obs")
+
 ```
 We find out that the correlation between review score and price is only 0.0346 which means that there is nearly no linear relationship between them so we remove this variable from our data set. Then, we drop all rows include NA values in our data set.
 
@@ -233,9 +228,6 @@ ggpairs1 <- tidy_listings %>%
           "Superhost" = host_is_superhost) %>% 
   GGally::ggpairs() +
   theme_minimal() 
-
-ggpairs1
-
 ```
 We use the function GGally::ggpairs() to start exploring distributions and correlations in our dataset.
 
