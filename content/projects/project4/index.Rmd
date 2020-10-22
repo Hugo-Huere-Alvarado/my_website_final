@@ -50,9 +50,8 @@ library(infer)
 library(vroom)
 ```
 
-# California Contributors US 2016 Elections
 
-I will graphically show the top ten cities in highest amounts raised in political contributions in California during the 2016 US Presidential election.
+The aim od this project is to identify the top ten cities by highest amounts raised in political contributions in California during the 2016 US Presidential election.
 
 ### Loading and sorting the contributions file
 Firstly, we load all the contributions and sorth them by the highest single contributions. 
@@ -74,7 +73,7 @@ At this point, I must join two dataframes:
 Let us first load a file with all US zipcodes that can be found here: http://www.uszipcodelist.com/download.html.
 ```{r, load_Zipdata, warnings= FALSE, message=FALSE}
 Zip <- vroom::vroom(here::here("data", "zip_code_database.csv"))
-head(Zip, 10)
+head(Zip, 5)
 ```
 
 Then, we merge the two dataframes to match the zipcodes with the primary cities in California
@@ -85,7 +84,7 @@ my_CA_2016 <- merge(CA_2016, my_zip, by = "zip", all.x=TRUE)
   
 ```
 
-## Top ten candidates
+## Top ten candidates in California by contributions
 
 Now, the fun part: let us plot bar charts that can show clearly the top ten cities in which the candidates raised capital for their electoral campaigns.
 
@@ -223,7 +222,7 @@ p_paul
 ## Conclusive graph
 Finally, let us merge all the charts together into a single one.
 
-```{r, warning=FALSE, message=FALSE, echo=FALSE, fig.width = 30, fig.height=14}
+```{r, warning=FALSE, message=FALSE, echo=FALSE, fig.width = 30, fig.height=16}
 
 p_final <- (p_clinton | p_sanders | p_trump | p_cruz | p_rubio) / (p_bush | p_carson | p_kasich | p_fiorina | p_paul) + plot_annotation(title = "Where did candidates raise most money?", theme=theme(plot.title = element_text(size = 20, face="bold"))) + plot_annotation(caption = "Amount raised", theme=theme(plot.caption = element_text(size = 16, face="bold", hjust = 0.5))) + facet_wrap(~"Clinton, Hillary Rodham")+ theme(strip.text =element_text(size=16))
 

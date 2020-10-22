@@ -14,9 +14,7 @@ output:
 
 
 
-<div id="california-contributors-us-2016-elections" class="section level1">
-<h1>California Contributors US 2016 Elections</h1>
-<p>I will graphically show the top ten cities in highest amounts raised in political contributions in California during the 2016 US Presidential election.</p>
+<p>The aim od this project is to identify the top ten cities by highest amounts raised in political contributions in California during the 2016 US Presidential election.</p>
 <div id="loading-and-sorting-the-contributions-file" class="section level3">
 <h3>Loading and sorting the contributions file</h3>
 <p>Firstly, we load all the contributions and sorth them by the highest single contributions.
@@ -57,20 +55,15 @@ head(CA_2016,20)</code></pre>
 - a dataframe that can translate zipcodes to cities.</p>
 <p>Let us first load a file with all US zipcodes that can be found here: <a href="http://www.uszipcodelist.com/download.html" class="uri">http://www.uszipcodelist.com/download.html</a>.</p>
 <pre class="r"><code>Zip &lt;- vroom::vroom(here::here(&quot;data&quot;, &quot;zip_code_database.csv&quot;))
-head(Zip, 10)</code></pre>
-<pre><code>## # A tibble: 10 x 16
-##    zip   type  primary_city acceptable_citi~ unacceptable_ci~ state county
-##    &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;        &lt;chr&gt;            &lt;chr&gt;            &lt;chr&gt; &lt;chr&gt; 
-##  1 00501 UNIQ~ Holtsville   &lt;NA&gt;             I R S Service C~ NY    Suffo~
-##  2 00544 UNIQ~ Holtsville   &lt;NA&gt;             Irs Service Cen~ NY    Suffo~
-##  3 00601 STAN~ Adjuntas     &lt;NA&gt;             Colinas Del Gig~ PR    Adjun~
-##  4 00602 STAN~ Aguada       &lt;NA&gt;             Alts De Aguada,~ PR    &lt;NA&gt;  
-##  5 00603 STAN~ Aguadilla    Ramey            Bda Caban, Bda ~ PR    Aguad~
-##  6 00604 PO B~ Aguadilla    Ramey            &lt;NA&gt;             PR    &lt;NA&gt;  
-##  7 00605 PO B~ Aguadilla    &lt;NA&gt;             &lt;NA&gt;             PR    &lt;NA&gt;  
-##  8 00606 STAN~ Maricao      &lt;NA&gt;             Urb San Juan Ba~ PR    Maric~
-##  9 00610 STAN~ Anasco       &lt;NA&gt;             Brisas De Anasc~ PR    &lt;NA&gt;  
-## 10 00611 PO B~ Angeles      &lt;NA&gt;             &lt;NA&gt;             PR    &lt;NA&gt;  
+head(Zip, 5)</code></pre>
+<pre><code>## # A tibble: 5 x 16
+##   zip   type  primary_city acceptable_citi~ unacceptable_ci~ state county
+##   &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;        &lt;chr&gt;            &lt;chr&gt;            &lt;chr&gt; &lt;chr&gt; 
+## 1 00501 UNIQ~ Holtsville   &lt;NA&gt;             I R S Service C~ NY    Suffo~
+## 2 00544 UNIQ~ Holtsville   &lt;NA&gt;             Irs Service Cen~ NY    Suffo~
+## 3 00601 STAN~ Adjuntas     &lt;NA&gt;             Colinas Del Gig~ PR    Adjun~
+## 4 00602 STAN~ Aguada       &lt;NA&gt;             Alts De Aguada,~ PR    &lt;NA&gt;  
+## 5 00603 STAN~ Aguadilla    Ramey            Bda Caban, Bda ~ PR    Aguad~
 ## # ... with 9 more variables: timezone &lt;chr&gt;, area_codes &lt;dbl&gt;, latitude &lt;dbl&gt;,
 ## #   longitude &lt;dbl&gt;, world_region &lt;chr&gt;, country &lt;chr&gt;, decommissioned &lt;dbl&gt;,
 ## #   estimated_population &lt;dbl&gt;, notes &lt;chr&gt;</code></pre>
@@ -79,8 +72,8 @@ head(Zip, 10)</code></pre>
 
 my_CA_2016 &lt;- merge(CA_2016, my_zip, by = &quot;zip&quot;, all.x=TRUE)</code></pre>
 </div>
-<div id="top-ten-candidates" class="section level2">
-<h2>Top ten candidates</h2>
+<div id="top-ten-candidates-in-california-by-contributions" class="section level2">
+<h2>Top ten candidates in California by contributions</h2>
 <p>Now, the fun part: let us plot bar charts that can show clearly the top ten cities in which the candidates raised capital for their electoral campaigns.</p>
 <p>Naturally:
 - Democrats will be represented in blue
@@ -146,5 +139,4 @@ my_CA_2016 &lt;- merge(CA_2016, my_zip, by = &quot;zip&quot;, all.x=TRUE)</code>
 <h2>Conclusive graph</h2>
 <p>Finally, let us merge all the charts together into a single one.</p>
 <p><img src="index_files/figure-html/unnamed-chunk-12-1.png" width="2880" style="display: block; margin: auto;" /></p>
-</div>
 </div>
