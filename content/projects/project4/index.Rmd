@@ -55,21 +55,15 @@ library(vroom)
 I will graphically show the top ten cities in highest amounts raised in political contributions in California during the 2016 US Presidential election.
 
 ### Loading and sorting the contributions file
-Firstly, we load all the contributions. I am showing you the first twenty but there are actually almost 1.3m observations in total.
+Firstly, we load all the contributions and sorth them by the highest single contributions. 
+Here, I am going to show you the first twenty but there are actually almost 1.3 m observations in total.
+
 ```{r, load_CA_2016data, warnings= FALSE, message=FALSE}
 CA_2016 <- vroom::vroom(here::here("data", "CA_contributors_2016.csv")) %>%
-  clean_names()
-
-head(CA_2016,20)
-```
-
-Then, we sort the observation to find the highest individual contributions.
-```{r}
-
-CA_2016 %>%
+  clean_names() %>%
   arrange(desc(contb_receipt_amt))
 
-head(CA_2016, 20)
+head(CA_2016,20)
 ```
 
 ### Loading and merging the zip codes
