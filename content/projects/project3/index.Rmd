@@ -5,7 +5,7 @@ description: STEVEN SPIELBERG VS TIM BURTON
 image: IMDB.jpg
 draft: no
 keywords: ''
-slug: "index"
+slug: index
 categories:
 - ""
 - ""

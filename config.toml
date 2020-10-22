@@ -49,7 +49,7 @@ disqusShortname = ""
       
     [[params.navigation.links]]
       name = "About me"
-      url = "blogs/ipsum"
+      url = "about"
       
     [[params.navigation.links]]
       name = "My projects"
@@ -90,13 +90,13 @@ disqusShortname = ""
       title = "AIRBNB MEXICO CITY"
       subtitle = "How much will a couple spend to stay four nights in Mexico City?"
       image = "MXN.jpg"
-      url = "blogs/tempus"
+      url = "projects/project1"
 
     [[params.tiles.showcase]]
       title = "COVID-19 STATISTICS"
       subtitle = "Analysis by co-morbidities and ICU admission"
       image = "COVID-19.jpg"
-      url = "blogs/tempus"
+      url = "projects/project2"
 
     [[params.tiles.showcase]]
       title = "STEVEN SPIELBERG VS TIM BURTON"
