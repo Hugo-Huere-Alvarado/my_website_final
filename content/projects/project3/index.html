@@ -1,10 +1,11 @@
 ---
-title: "Analysis of movies - IMDB dataset"
-date: '2020-10-14'
-description: ''
+title: "index"
+date: '2020-10-11'
+description: STEVEN SPIELBERG VS TIM BURTON
+image: IMDB.jpg
 draft: no
 keywords: ''
-slug: "pj5"
+slug: "index"
 categories:
 - ''
 - ''
@@ -353,16 +354,16 @@ null_dist</code></pre>
 <pre><code>## # A tibble: 1,000 x 2
 ##    replicate    stat
 ##        &lt;int&gt;   &lt;dbl&gt;
-##  1         1  0.216 
-##  2         2  0.125 
-##  3         3 -0.0956
-##  4         4  0.284 
-##  5         5  0.198 
-##  6         6  0.0447
-##  7         7 -0.452 
-##  8         8  0.0759
-##  9         9  0.0655
-## 10        10  0.0135
+##  1         1 -0.285 
+##  2         2 -0.252 
+##  3         3  0.0837
+##  4         4  0.0837
+##  5         5  0.442 
+##  6         6  0.117 
+##  7         7 -0.358 
+##  8         8  0.320 
+##  9         9 -0.163 
+## 10        10  0.188 
 ## # ... with 990 more rows</code></pre>
 <pre class="r"><code>ggplot(data = null_dist, aes(x = stat)) +
   geom_histogram()</code></pre>
