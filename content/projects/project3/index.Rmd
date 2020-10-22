@@ -1,16 +1,15 @@
-```
-title = "STEVEN SPIELBERG VS TIM BURTON?"
-author = "Hugo Huere Alvarado"
-date = "`r Sys.Date()`"
-output =
-  html_document:
-    theme = flatly
-    highlight = zenburn
-    number_sections = yes
-    toc = yes
-    toc_float = yes
-    code_folding = show
-```
+---
+title: "Analysis of movies - IMDB dataset"
+date: '2020-10-14'
+description: ''
+draft: no
+image: "IMDB.jpg"
+keywords: ''
+slug: "pj5"
+categories:
+- ''
+- ''
+---
 
 ```{r, setup, echo=FALSE}
 knitr::opts_chunk$set(
@@ -26,6 +25,7 @@ knitr::opts_chunk$set(
   fig.height=6.75,
   fig.align = "center"
 )
+
 ```
 
 
@@ -66,11 +66,8 @@ movies <- read_csv(here::here("data", "movies.csv"))
 glimpse(movies)
 ```
 
-# Your R code and analysis should go here. If you want to insert a blank chunk of R code you can just hit `Ctrl/Cmd+Alt+I` 
+Then I manipulate the data set so that only Steven Spielburg and Tim Burton are evaluated.
 ```{r}
-
-## Reproducing the graph
-
 movies_v1 <- movies %>% filter(director == "Steven Spielberg" | director == "Tim Burton") %>% select(director | rating)
 
 movies_v2 <- movies_v1 %>%
@@ -84,7 +81,13 @@ movies_v2 <- movies_v1 %>%
             lower = mean_rating - t_critical * se_rating,
             upper = mean_rating + t_critical * se_rating
             )
+```
+Steven Spielburg has an average IMDB rating of 7.57 while Tim Burton has an average rating of just 6.93. Furthermore, Steven has made more movies with a smaller spread across ratings, which is seen by his standard error of just 0.148. On the other hand, Tim Burton has made fewer movies with a larger discrepancy in ratings; causing him to have an standard error of 0.193.
 
+### Data Visualisation
+Judging from these numbers alone, it does indeed seem that a movie's director has an impact on the IMDB Rating. But looking at numbers can be a bit daunting, so let's try to make this a bit more appealing to look at: 
+
+``` {r}
 p <- ggplot(movies_v2, aes(mean_rating, reorder(director, mean_rating), colour = director)) +
   labs(title = "Do Spielberg and Burton have the same mean IMDB ratings?", subtitle = "95% confidence intervals overlap", x= "Mean IMDB Rating", y = "") +
   theme_bw() + theme(legend.position = "none") +
@@ -97,9 +100,12 @@ p <- ggplot(movies_v2, aes(mean_rating, reorder(director, mean_rating), colour =
 
 p
 
+```
+
 
 ## Hypothesis test with formula
 
+```{r}
 movies <- movies %>%
   mutate(spielberg_burton = movies$director %in% c("Steven Spielberg", "Tim Burton"))
 
@@ -109,8 +115,12 @@ movies %>% filter(!is.na(spielberg_burton)) %>%
   mutate(prop= count/sum(count))
 
 t.test(rating ~ spielberg_burton, data = movies)
+```
+
 
 ## Hypothesis test with infer
+
+```{r}
 
 obs_diff <- movies %>%
   specify(rating ~ spielberg_burton) %>%
@@ -134,3 +144,6 @@ null_dist %>% visualize() +
 null_dist %>%
   get_p_value(obs_stat = obs_diff, direction = "two_sided")
 ```
+
+##  Conclusion
+Using Michael Bay and James Cameron this becomes a lot more apparent - here the gap between the two confidence intervals is quite large and so **tells us that a movie's director most likely plays a role in its IMDB rating**.

@@ -1,17 +1,18 @@
+---
+title: "Analysis of movies - IMDB dataset"
+date: '2020-10-14'
+description: ''
+draft: no
+image: "IMDB.jpg"
+keywords: ''
+slug: "pj5"
+categories:
+- ''
+- ''
+---
 
 
 
-<pre><code>title = &quot;STEVEN SPIELBERG VS TIM BURTON?&quot;
-author = &quot;Hugo Huere Alvarado&quot;
-date = &quot;2020-10-22&quot;
-output =
-  html_document:
-    theme = flatly
-    highlight = zenburn
-    number_sections = yes
-    toc = yes
-    toc_float = yes
-    code_folding = show</code></pre>
 <div id="imdb-ratings-differences-between-directors" class="section level1">
 <h1>IMDB ratings: Differences between directors</h1>
 <p>This project was done to research whether the IMDB rating for blockbuster movies were influenced by the director. Before looking at any kind of data, a null hypothesis and alternative hypothesis were set up as follows:</p>
@@ -42,13 +43,8 @@ glimpse(movies)</code></pre>
 ## $ votes               &lt;dbl&gt; 886204, 793059, 418214, 995415, 1676169, 534658...
 ## $ reviews             &lt;dbl&gt; 3777, 2843, 1934, 2425, 5312, 3917, 1752, 1752,...
 ## $ rating              &lt;dbl&gt; 7.9, 7.7, 7.0, 8.1, 9.0, 6.5, 8.7, 7.5, 8.5, 7....</code></pre>
-</div>
-</div>
-<div id="your-r-code-and-analysis-should-go-here.-if-you-want-to-insert-a-blank-chunk-of-r-code-you-can-just-hit-ctrlcmdalti" class="section level1">
-<h1>Your R code and analysis should go here. If you want to insert a blank chunk of R code you can just hit <code>Ctrl/Cmd+Alt+I</code></h1>
-<pre class="r"><code>## Reproducing the graph
-
-movies_v1 &lt;- movies %&gt;% filter(director == &quot;Steven Spielberg&quot; | director == &quot;Tim Burton&quot;) %&gt;% select(director | rating)
+<p>Then I manipulate the data set so that only Steven Spielburg and Tim Burton are evaluated.</p>
+<pre class="r"><code>movies_v1 &lt;- movies %&gt;% filter(director == &quot;Steven Spielberg&quot; | director == &quot;Tim Burton&quot;) %&gt;% select(director | rating)
 
 movies_v2 &lt;- movies_v1 %&gt;%
   group_by(director) %&gt;%
@@ -60,9 +56,13 @@ movies_v2 &lt;- movies_v1 %&gt;%
             margin_of_error = t_critical * se_rating,
             lower = mean_rating - t_critical * se_rating,
             upper = mean_rating + t_critical * se_rating
-            )
-
-p &lt;- ggplot(movies_v2, aes(mean_rating, reorder(director, mean_rating), colour = director)) +
+            )</code></pre>
+<p>Steven Spielburg has an average IMDB rating of 7.57 while Tim Burton has an average rating of just 6.93. Furthermore, Steven has made more movies with a smaller spread across ratings, which is seen by his standard error of just 0.148. On the other hand, Tim Burton has made fewer movies with a larger discrepancy in ratings; causing him to have an standard error of 0.193.</p>
+</div>
+<div id="data-visualisation" class="section level3">
+<h3>Data Visualisation</h3>
+<p>Judging from these numbers alone, it does indeed seem that a movie’s director has an impact on the IMDB Rating. But looking at numbers can be a bit daunting, so let’s try to make this a bit more appealing to look at:</p>
+<pre class="r"><code>p &lt;- ggplot(movies_v2, aes(mean_rating, reorder(director, mean_rating), colour = director)) +
   labs(title = &quot;Do Spielberg and Burton have the same mean IMDB ratings?&quot;, subtitle = &quot;95% confidence intervals overlap&quot;, x= &quot;Mean IMDB Rating&quot;, y = &quot;&quot;) +
   theme_bw() + theme(legend.position = &quot;none&quot;) +
   geom_point(size = 7) +
@@ -73,10 +73,11 @@ p &lt;- ggplot(movies_v2, aes(mean_rating, reorder(director, mean_rating), colou
   geom_rect(aes(xmin = lower[1], xmax = upper[2], ymin = 0, ymax = 3), colour = &quot;grey&quot;, alpha = 0.2)
 
 p</code></pre>
-<p><img src="index_files/figure-html/unnamed-chunk-1-1.png" width="648" style="display: block; margin: auto;" /></p>
-<pre class="r"><code>## Hypothesis test with formula
-
-movies &lt;- movies %&gt;%
+<p><img src="index_files/figure-html/unnamed-chunk-2-1.png" width="648" style="display: block; margin: auto;" /></p>
+</div>
+<div id="hypothesis-test-with-formula" class="section level2">
+<h2>Hypothesis test with formula</h2>
+<pre class="r"><code>movies &lt;- movies %&gt;%
   mutate(spielberg_burton = movies$director %in% c(&quot;Steven Spielberg&quot;, &quot;Tim Burton&quot;))
 
 movies %&gt;% filter(!is.na(spielberg_burton)) %&gt;% 
@@ -100,9 +101,10 @@ movies %&gt;% filter(!is.na(spielberg_burton)) %&gt;%
 ## sample estimates:
 ## mean in group FALSE  mean in group TRUE 
 ##                6.38                7.31</code></pre>
-<pre class="r"><code>## Hypothesis test with infer
-
-obs_diff &lt;- movies %&gt;%
+</div>
+<div id="hypothesis-test-with-infer" class="section level2">
+<h2>Hypothesis test with infer</h2>
+<pre class="r"><code>obs_diff &lt;- movies %&gt;%
   specify(rating ~ spielberg_burton) %&gt;%
   calculate(stat = &quot;diff in means&quot;, order = c(TRUE, FALSE))
 obs_diff</code></pre>
@@ -117,29 +119,34 @@ obs_diff</code></pre>
   calculate(stat = &quot;diff in means&quot;, order = c(TRUE, FALSE))
 null_dist</code></pre>
 <pre><code>## # A tibble: 1,000 x 2
-##    replicate    stat
-##        &lt;int&gt;   &lt;dbl&gt;
-##  1         1  0.0993
-##  2         2 -0.0696
-##  3         3  0.0733
-##  4         4  0.190 
-##  5         5 -0.0359
-##  6         6 -0.142 
-##  7         7  0.112 
-##  8         8  0.115 
-##  9         9 -0.277 
-## 10        10  0.0551
+##    replicate      stat
+##        &lt;int&gt;     &lt;dbl&gt;
+##  1         1  0.0213  
+##  2         2  0.102   
+##  3         3 -0.213   
+##  4         4 -0.0281  
+##  5         5  0.0551  
+##  6         6 -0.277   
+##  7         7  0.0577  
+##  8         8 -0.150   
+##  9         9  0.000524
+## 10        10 -0.137   
 ## # ... with 990 more rows</code></pre>
 <pre class="r"><code>ggplot(data = null_dist, aes(x = stat)) +
   geom_histogram()</code></pre>
-<p><img src="index_files/figure-html/unnamed-chunk-1-2.png" width="648" style="display: block; margin: auto;" /></p>
+<p><img src="index_files/figure-html/unnamed-chunk-4-1.png" width="648" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>null_dist %&gt;% visualize() +
   shade_p_value(obs_stat = obs_diff, direction = &quot;two-sided&quot;)</code></pre>
-<p><img src="index_files/figure-html/unnamed-chunk-1-3.png" width="648" style="display: block; margin: auto;" /></p>
+<p><img src="index_files/figure-html/unnamed-chunk-4-2.png" width="648" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>null_dist %&gt;%
   get_p_value(obs_stat = obs_diff, direction = &quot;two_sided&quot;)</code></pre>
 <pre><code>## # A tibble: 1 x 1
 ##   p_value
 ##     &lt;dbl&gt;
 ## 1       0</code></pre>
+</div>
+<div id="conclusion" class="section level2">
+<h2>Conclusion</h2>
+<p>Using Michael Bay and James Cameron this becomes a lot more apparent - here the gap between the two confidence intervals is quite large and so <strong>tells us that a movie’s director most likely plays a role in its IMDB rating</strong>.</p>
+</div>
 </div>
