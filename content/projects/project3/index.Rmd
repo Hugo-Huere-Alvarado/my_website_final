@@ -29,7 +29,7 @@ knitr::opts_chunk$set(
 ```
 
 
-```{r load-libraries, echo=FALSE}
+```{r load-libraries, warning=FALSE, message=FALSE, echo=FALSE}
 # Loading all libraries
 library(tidyverse)
 library(mosaic)
@@ -54,17 +54,31 @@ library(infer)
 This project was done to research whether the IMDB rating for blockbuster movies were influenced by the director. Before looking at any kind of data, a null hypothesis and alternative hypothesis were set up as follows: 
 
 ### Null Hypothesis
-* There is no difference in the mean IMDB-rating for movies produced by Steven Spielberg or Tim Burton. 
+There is no difference in the mean IMDB-rating for movies produced by Steven Spielberg or Tim Burton. 
 
 ### Alternative Hypothesis
-* There is a significant difference between these mean IMDB-ratings.
+There is a significant difference between these mean IMDB-ratings.
 
-First, let us load the data into R:
+We will look at a subset sample of movies, taken from the [Kaggle IMDB 5000 movie dataset](https://www.kaggle.com/carolzhangdc/imdb-5000-movie-dataset)
 
-```{r load-movies-data}
+```{r,load_movies, warning=FALSE, message=FALSE}
 movies <- read_csv(here::here("data", "movies.csv"))
 glimpse(movies)
+skim(movies)
 ```
+Besides the obvious variables of `title`, `genre`, `director`, `year`, and `duration`, the rest of the variables are as follows:
+
+- `gross` : The gross earnings in the US box office, not adjusted for inflation
+- `budget`: The movie's budget 
+- `cast_facebook_likes`: the number of facebook likes cast memebrs received
+- `votes`: the number of people who voted for (or rated) the movie in IMDB 
+- `reviews`: the number of reviews for that movie
+- `rating`: IMDB average rating 
+
+Are there any missing values (NAs)? Are all entries distinct or are there duplicate entries?
+
+**No missing but many duplicates across categories. There are 2961 rows and only 2907 unique movie titles, so it can be inferred that some movies show more than 1 times with different genres.**
+
 
 Then I manipulate the data set so that only Steven Spielburg and Tim Burton are evaluated.
 ```{r}
