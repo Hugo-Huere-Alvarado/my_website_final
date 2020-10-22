@@ -47,6 +47,7 @@ library(tidyquant)
 library(ggplot2)
 library(patchwork)
 library(infer)
+library(vroom)
 ```
 
 
