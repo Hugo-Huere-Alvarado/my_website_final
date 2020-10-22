@@ -90,7 +90,7 @@ disqusShortname = ""
       title = "AIRBNB MEXICO CITY"
       subtitle = "How much will a couple spend to stay four nights in Mexico City?"
       image = "MXN.jpg"
-      url = "projects/project1"
+      url = "projects/project1/"
 
     [[params.tiles.showcase]]
       title = "COVID-19 STATISTICS"
@@ -102,7 +102,7 @@ disqusShortname = ""
       title = "STEVEN SPIELBERG VS TIM BURTON"
       subtitle = "Who has got the best IMDB ratings?"
       image = "IMDB.jpg"
-      url = "projects/project3"
+      url = "projects/project3/"
 
     [[params.tiles.showcase]]
       title = "2016 US PRESIDENTIAL ELECTIONS"
@@ -156,7 +156,7 @@ disqusShortname = ""
     # - send a dummy email yourself to confirm your account
     # - click the confirm link in the email from www.formspree.io
     # - you're done. Happy mailing!
-    # formEmail = "example@domain.com"
+     formEmail = "hugoh.mfa2021@london.edu"
 
     # Contact Section
     # You can add multiple emails, phone numbers, or addresses
@@ -211,6 +211,6 @@ disqusShortname = ""
       label = "LinkedIn"
 
     [[params.footer.quicklinks]]
-      #text = "Design: "
-      #url= "https://www.html5up.net"
-      #alt = "HTML5 UP"
+      text = "Design: "
+      url= "https://www.html5up.net"
+      alt = "HTML5 UP"
