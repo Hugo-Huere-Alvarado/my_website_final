@@ -90,7 +90,7 @@ disqusShortname = ""
       title = "AIRBNB MEXICO CITY"
       subtitle = "How much will a couple spend to stay four nights in Mexico City?"
       image = "MXN.jpg"
-      url = "projects/project1"
+      url = "blogs/tempus"
 
     [[params.tiles.showcase]]
       title = "COVID-19 STATISTICS"
@@ -102,7 +102,7 @@ disqusShortname = ""
       title = "STEVEN SPIELBERG VS TIM BURTON"
       subtitle = "Who has got the best IMDB ratings?"
       image = "IMDB.jpg"
-      url = "projects/project3"
+      url = "blogs/blog8"
 
     [[params.tiles.showcase]]
       title = "2016 US PRESIDENTIAL ELECTIONS"
