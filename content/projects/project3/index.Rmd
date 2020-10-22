@@ -3,7 +3,6 @@ title: "Analysis of movies - IMDB dataset"
 date: '2020-10-14'
 description: ''
 draft: no
-image: IMDB.jpg
 keywords: ''
 slug: "pj5"
 categories:

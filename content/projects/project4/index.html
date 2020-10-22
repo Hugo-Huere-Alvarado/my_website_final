@@ -1,0 +1,132 @@
+---
+title: "California Contributors US 2016 Elections"
+date: '2020-09-27'
+description: ''
+draft: no
+keywords: ''
+slug: "pj5"
+categories:
+- ''
+- ''
+---
+
+
+
+<pre class="r"><code>CA_2016 &lt;- vroom::vroom(here::here(&quot;data&quot;, &quot;CA_contributors_2016.csv&quot;)) %&gt;%
+  clean_names()</code></pre>
+<pre class="r"><code>#Highest individual contributions
+CA_2016 %&gt;%
+  arrange(desc(contb_receipt_amt))</code></pre>
+<pre><code>## # A tibble: 1,292,843 x 4
+##    cand_nm                   contb_receipt_amt   zip contb_date
+##    &lt;chr&gt;                                 &lt;dbl&gt; &lt;dbl&gt; &lt;date&gt;    
+##  1 Walker, Scott                         10800 90680 2015-07-07
+##  2 Walker, Scott                         10800 92677 2015-07-06
+##  3 Cruz, Rafael Edward &#39;Ted&#39;             10800 91604 2015-12-21
+##  4 Cruz, Rafael Edward &#39;Ted&#39;             10800 93401 2015-06-12
+##  5 Cruz, Rafael Edward &#39;Ted&#39;             10800 90024 2015-06-24
+##  6 Cruz, Rafael Edward &#39;Ted&#39;             10800 90034 2015-12-08
+##  7 Cruz, Rafael Edward &#39;Ted&#39;             10800 93013 2015-12-31
+##  8 Cruz, Rafael Edward &#39;Ted&#39;             10800 90211 2015-12-21
+##  9 Cruz, Rafael Edward &#39;Ted&#39;             10800 90036 2015-12-17
+## 10 Cruz, Rafael Edward &#39;Ted&#39;             10800 92091 2015-12-14
+## # ... with 1,292,833 more rows</code></pre>
+<p>#Loading Zip files</p>
+<pre class="r"><code>Zip &lt;- vroom::vroom(here::here(&quot;data&quot;, &quot;zip_code_database.csv&quot;))
+Zip</code></pre>
+<pre><code>## # A tibble: 42,522 x 16
+##    zip   type  primary_city acceptable_citi~ unacceptable_ci~ state county
+##    &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;        &lt;chr&gt;            &lt;chr&gt;            &lt;chr&gt; &lt;chr&gt; 
+##  1 00501 UNIQ~ Holtsville   &lt;NA&gt;             I R S Service C~ NY    Suffo~
+##  2 00544 UNIQ~ Holtsville   &lt;NA&gt;             Irs Service Cen~ NY    Suffo~
+##  3 00601 STAN~ Adjuntas     &lt;NA&gt;             Colinas Del Gig~ PR    Adjun~
+##  4 00602 STAN~ Aguada       &lt;NA&gt;             Alts De Aguada,~ PR    &lt;NA&gt;  
+##  5 00603 STAN~ Aguadilla    Ramey            Bda Caban, Bda ~ PR    Aguad~
+##  6 00604 PO B~ Aguadilla    Ramey            &lt;NA&gt;             PR    &lt;NA&gt;  
+##  7 00605 PO B~ Aguadilla    &lt;NA&gt;             &lt;NA&gt;             PR    &lt;NA&gt;  
+##  8 00606 STAN~ Maricao      &lt;NA&gt;             Urb San Juan Ba~ PR    Maric~
+##  9 00610 STAN~ Anasco       &lt;NA&gt;             Brisas De Anasc~ PR    &lt;NA&gt;  
+## 10 00611 PO B~ Angeles      &lt;NA&gt;             &lt;NA&gt;             PR    &lt;NA&gt;  
+## # ... with 42,512 more rows, and 9 more variables: timezone &lt;chr&gt;,
+## #   area_codes &lt;dbl&gt;, latitude &lt;dbl&gt;, longitude &lt;dbl&gt;, world_region &lt;chr&gt;,
+## #   country &lt;chr&gt;, decommissioned &lt;dbl&gt;, estimated_population &lt;dbl&gt;,
+## #   notes &lt;chr&gt;</code></pre>
+<pre class="r"><code>my_zip &lt;- Zip[,c(1,3)]
+
+my_CA_2016 &lt;- merge(CA_2016, my_zip, by = &quot;zip&quot;, all.x=TRUE)</code></pre>
+<pre class="r"><code>###1 Clinton
+Clinton &lt;- my_CA_2016 %&gt;% filter(cand_nm == &quot;Clinton, Hillary Rodham&quot;) %&gt;% group_by(primary_city) %&gt;% summarise(tot_cont = sum(contb_receipt_amt)) %&gt;% arrange(desc(tot_cont))
+
+p_clinton &lt;- ggplot(Clinton[1:10,], aes(x = tot_cont, y = reorder(primary_city, tot_cont))) + geom_bar(stat=&quot;identity&quot;, fill=&quot;blue&quot;) + scale_x_continuous(labels=scales::dollar_format()) + labs(x=&quot;&quot;, y=&quot;&quot;) + theme_bw() + theme(plot.title = element_text(hjust = 0.5)) + facet_wrap(~&quot;Clinton, Hillary Rodham&quot;)+ theme(strip.text =element_text(size=14))
+ 
+p_clinton</code></pre>
+<p><img src="index_files/figure-html/unnamed-chunk-3-1.png" width="648" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>###2 Sanders
+Sanders &lt;- my_CA_2016 %&gt;% filter(cand_nm == &quot;Sanders, Bernard&quot;) %&gt;% group_by(primary_city) %&gt;% summarise(tot_cont = sum(contb_receipt_amt)) %&gt;% arrange(desc(tot_cont))
+
+p_sanders &lt;- ggplot(Sanders[1:10,], aes(x = tot_cont, y = reorder(primary_city, tot_cont))) + geom_bar(stat=&quot;identity&quot;, fill=&quot;blue&quot;) + scale_x_continuous(labels=scales::dollar_format()) + labs(x = &quot;&quot;, y =  &quot;&quot;) + theme_bw() + theme(plot.title = element_text(hjust = 0.5)) + facet_wrap(~&quot;Sanders, Bernard&quot;)+ theme(strip.text =element_text(size=14))
+
+p_sanders</code></pre>
+<p><img src="index_files/figure-html/unnamed-chunk-4-1.png" width="648" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>###3 Trump
+Trump &lt;- my_CA_2016 %&gt;% filter(cand_nm == &quot;Trump, Donald J.&quot;) %&gt;% group_by(primary_city) %&gt;% summarise(tot_cont = sum(contb_receipt_amt)) %&gt;% arrange(desc(tot_cont))
+
+p_trump &lt;- ggplot(Trump[1:10,], aes(x = tot_cont, y = reorder(primary_city, tot_cont))) + geom_bar(stat=&quot;identity&quot;, fill=&quot;red&quot;) + scale_x_continuous(labels=scales::dollar_format()) + labs(x=&quot;&quot;, y=&quot;&quot;) + theme_bw() + theme(plot.title = element_text(hjust = 0.5)) + facet_wrap(~&quot;Trump, Donald J.&quot;)+ theme(strip.text =element_text(size=14))
+
+p_trump</code></pre>
+<p><img src="index_files/figure-html/unnamed-chunk-5-1.png" width="648" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>###4 Cruz
+Cruz &lt;- my_CA_2016 %&gt;% filter(cand_nm == &quot;Cruz, Rafael Edward &#39;Ted&#39;&quot;) %&gt;% group_by(primary_city) %&gt;% summarise(tot_cont = sum(contb_receipt_amt)) %&gt;% arrange(desc(tot_cont))
+
+p_cruz &lt;- ggplot(Cruz[1:10,], aes(x = tot_cont, y = reorder(primary_city, tot_cont))) + geom_bar(stat=&quot;identity&quot;, fill=&quot;red&quot;) + scale_x_continuous(labels=scales::dollar_format()) + labs(x=&quot;&quot;, y=&quot;&quot;) + theme_bw() + theme(plot.title = element_text(hjust = 0.5)) + facet_wrap(~&quot;Cruz, Rafael Edward &#39;Ted&#39;&quot;)+ theme(strip.text =element_text(size=14))
+
+p_cruz</code></pre>
+<p><img src="index_files/figure-html/unnamed-chunk-6-1.png" width="648" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>###5 Rubio
+Rubio &lt;- my_CA_2016 %&gt;% filter(cand_nm == &quot;Rubio, Marco&quot;) %&gt;% group_by(primary_city) %&gt;% summarise(tot_cont = sum(contb_receipt_amt)) %&gt;% arrange(desc(tot_cont))
+
+p_rubio &lt;- ggplot(Clinton[1:10,], aes(x = tot_cont, y = reorder(primary_city, tot_cont))) + geom_bar(stat=&quot;identity&quot;, fill=&quot;red&quot;) + scale_x_continuous(labels=scales::dollar_format()) + labs(x=&quot;&quot;, y=&quot;&quot;) + theme_bw() + theme(plot.title = element_text(hjust = 0.5)) + facet_wrap(~&quot;Rubio, Marco&quot;)+ theme(strip.text =element_text(size=14))
+
+p_rubio</code></pre>
+<p><img src="index_files/figure-html/unnamed-chunk-7-1.png" width="648" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>###6 Bush
+Bush &lt;- my_CA_2016 %&gt;% filter(cand_nm == &quot;Bush, Jeb&quot;) %&gt;% group_by(primary_city) %&gt;% summarise(tot_cont = sum(contb_receipt_amt)) %&gt;% arrange(desc(tot_cont))
+
+p_bush &lt;- ggplot(Clinton[1:10,], aes(x = tot_cont, y = reorder(primary_city, tot_cont))) + geom_bar(stat=&quot;identity&quot;, fill=&quot;red&quot;) + scale_x_continuous(labels=scales::dollar_format()) + labs(x=&quot;&quot;, y=&quot;&quot;) + theme_bw() + theme(plot.title = element_text(hjust = 0.5)) + facet_wrap(~&quot;Bush, Jeb&quot;) + theme(strip.text =element_text(size=14))
+
+p_bush</code></pre>
+<p><img src="index_files/figure-html/unnamed-chunk-8-1.png" width="648" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>###7 Carson
+Carson &lt;- my_CA_2016 %&gt;% filter(cand_nm == &quot;Carson, Benjamin S.&quot;) %&gt;% group_by(primary_city) %&gt;% summarise(tot_cont = sum(contb_receipt_amt)) %&gt;% arrange(desc(tot_cont))
+
+p_carson &lt;- ggplot(Clinton[1:10,], aes(x = tot_cont, y = reorder(primary_city, tot_cont))) + geom_bar(stat=&quot;identity&quot;, fill=&quot;red&quot;) + scale_x_continuous(labels=scales::dollar_format()) + labs(x=&quot;&quot;, y=&quot;&quot;) + theme_bw() + theme(plot.title = element_text(hjust = 0.5)) + facet_wrap(~&quot;Carson, Benjamin S.&quot;)+ theme(strip.text =element_text(size=14))
+
+p_carson</code></pre>
+<p><img src="index_files/figure-html/unnamed-chunk-9-1.png" width="648" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>###8 Kasich
+Kasich &lt;- my_CA_2016 %&gt;% filter(cand_nm == &quot;Kasich, John R.&quot;) %&gt;% group_by(primary_city) %&gt;% summarise(tot_cont = sum(contb_receipt_amt)) %&gt;% arrange(desc(tot_cont))
+
+p_kasich &lt;- ggplot(Kasich[1:10,], aes(x = tot_cont, y = reorder(primary_city, tot_cont))) + geom_bar(stat=&quot;identity&quot;, fill=&quot;red&quot;) + scale_x_continuous(labels=scales::dollar_format()) + labs(x=&quot;&quot;, y=&quot;&quot;) + theme_bw() + theme(plot.title = element_text(hjust = 0.5)) + facet_wrap(~&quot;Kasich, John R.&quot;)+ theme(strip.text =element_text(size=14))
+
+p_kasich</code></pre>
+<p><img src="index_files/figure-html/unnamed-chunk-10-1.png" width="648" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>###9 Fiorina
+Fiorina &lt;- my_CA_2016 %&gt;% filter(cand_nm == &quot;Fiorina, Carly&quot;) %&gt;% group_by(primary_city) %&gt;% summarise(tot_cont = sum(contb_receipt_amt)) %&gt;% arrange(desc(tot_cont))
+
+p_fiorina &lt;- ggplot(Clinton[1:10,], aes(x = tot_cont, y = reorder(primary_city, tot_cont))) + geom_bar(stat=&quot;identity&quot;, fill= &quot;red&quot;) + scale_x_continuous(labels=scales::dollar_format()) + labs(x=&quot;&quot;, y=&quot;&quot;) + theme_bw() + theme(plot.title = element_text(hjust = 0.5)) + facet_wrap(~&quot;Fiorina, Carly&quot;)+ theme(strip.text =element_text(size=14))
+
+p_fiorina</code></pre>
+<p><img src="index_files/figure-html/unnamed-chunk-11-1.png" width="648" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>###10 Paul
+Paul &lt;- my_CA_2016 %&gt;% filter(cand_nm == &quot;Paul, Rand&quot;) %&gt;% group_by(primary_city) %&gt;% summarise(tot_cont = sum(contb_receipt_amt)) %&gt;% arrange(desc(tot_cont))
+
+p_paul &lt;- ggplot(Paul[1:10,], aes(x = tot_cont, y = reorder(primary_city, tot_cont))) + geom_bar(stat=&quot;identity&quot;, fill=&quot;red&quot;) + scale_x_continuous(labels=scales::dollar_format()) + labs(x=&quot;&quot;, y=&quot;&quot;) + theme_bw() + theme(plot.title = element_text(hjust = 0.5)) + facet_wrap(~&quot;Paul, Rand&quot;) + theme(strip.text =element_text(size=14))
+
+p_paul</code></pre>
+<p><img src="index_files/figure-html/unnamed-chunk-12-1.png" width="648" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>## Placing plots together
+
+p_final &lt;- (p_clinton | p_sanders | p_trump | p_cruz | p_rubio) / (p_bush | p_carson | p_kasich | p_fiorina | p_paul) + plot_annotation(title = &quot;Where did candidates raise most money?&quot;, theme=theme(plot.title = element_text(size = 20, face=&quot;bold&quot;))) + plot_annotation(caption = &quot;Amount raised&quot;, theme=theme(plot.caption = element_text(size = 16, face=&quot;bold&quot;, hjust = 0.5))) + facet_wrap(~&quot;Clinton, Hillary Rodham&quot;)+ theme(strip.text =element_text(size=16))
+
+p_final</code></pre>
+<p><img src="index_files/figure-html/unnamed-chunk-13-1.png" width="648" style="display: block; margin: auto;" /></p>

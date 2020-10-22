@@ -3,7 +3,6 @@ title: "California Contributors US 2016 Elections"
 date: '2020-09-27'
 description: ''
 draft: no
-image: US_pres
 keywords: ''
 slug: "pj5"
 categories:
@@ -49,8 +48,8 @@ library(vroom)
 ```
 
 ```{r, load_CA_2016data, warnings= FALSE, message=FALSE}
-CA_2016 <- vroom:vroom(here::here("data", "CA_contributors_2016.csv"))
-clean_names(CA_2016)
+CA_2016 <- vroom::vroom(here::here("data", "CA_contributors_2016.csv")) %>%
+  clean_names()
 ```
 
 ```{r}
@@ -62,7 +61,7 @@ CA_2016 %>%
 #Loading Zip files
 
 ```{r, load_Zipdata, warnings= FALSE, message=FALSE}
-Zip <- vroom:vroom(here::here("data", "zip_code_database.csv"))
+Zip <- vroom::vroom(here::here("data", "zip_code_database.csv"))
 Zip
 ```
 
