@@ -1,0 +1,163 @@
+---
+title: "Analysis of movies - IMDB dataset"
+date: '2020-10-14'
+description: ''
+draft: no
+keywords: ''
+slug: "pj5"
+categories:
+- ''
+- ''
+---
+
+```{r, setup, echo=FALSE}
+knitr::opts_chunk$set(
+  message = FALSE, 
+  warning = FALSE, 
+  tidy=FALSE,     # display code as typed
+  size="small")   # slightly smaller font for code
+options(digits = 3)
+
+# default figure size
+knitr::opts_chunk$set(
+  fig.width=6.75, 
+  fig.height=6.75,
+  fig.align = "center"
+)
+
+```
+
+
+```{r load-libraries, warning=FALSE, message=FALSE, echo=FALSE}
+# Loading all libraries
+library(tidyverse)
+library(mosaic)
+library(ggthemes)
+library(GGally)
+library(readxl)
+library(here)
+library(skimr)
+library(janitor)
+library(broom)
+library(tidyquant)
+library(infer)
+library(openintro)
+library(tidyquant)
+library(ggplot2)
+library(patchwork)
+library(infer)
+library(vroom)
+```
+
+
+# IMDB ratings: Differences between directors
+This project was done to research whether the IMDB rating for blockbuster movies were influenced by the director. Before looking at any kind of data, a null hypothesis and alternative hypothesis were set up as follows: 
+
+### Null Hypothesis
+There is no difference in the mean IMDB-rating for movies produced by Steven Spielberg or Tim Burton. 
+
+### Alternative Hypothesis
+There is a significant difference between these mean IMDB-ratings.
+
+We will look at a subset sample of movies, taken from the [Kaggle IMDB 5000 movie dataset](https://www.kaggle.com/carolzhangdc/imdb-5000-movie-dataset)
+
+```{r,load_movies, warning=FALSE, message=FALSE}
+movies <- vroom::vroom(here::here("data", "movies.csv"))
+glimpse(movies)
+skim(movies)
+```
+Besides the obvious variables of `title`, `genre`, `director`, `year`, and `duration`, the rest of the variables are as follows:
+
+- `gross` : The gross earnings in the US box office, not adjusted for inflation
+- `budget`: The movie's budget 
+- `cast_facebook_likes`: the number of facebook likes cast memebrs received
+- `votes`: the number of people who voted for (or rated) the movie in IMDB 
+- `reviews`: the number of reviews for that movie
+- `rating`: IMDB average rating 
+
+Are there any missing values (NAs)? Are all entries distinct or are there duplicate entries?
+
+**No missing but many duplicates across categories. There are 2961 rows and only 2907 unique movie titles, so it can be inferred that some movies show more than 1 times with different genres.**
+
+
+Then I manipulate the data set so that only Steven Spielburg and Tim Burton are evaluated.
+```{r}
+movies_v1 <- movies %>% filter(director == "Steven Spielberg" | director == "Tim Burton") %>% select(director | rating)
+
+movies_v2 <- movies_v1 %>%
+  group_by(director) %>%
+  summarise(mean_rating = mean(rating, na.rm=TRUE),
+            sd_rating = sd(rating, na.rm = TRUE),
+            count = n(),
+            se_rating = sd_rating/sqrt(count),
+            t_critical = qt(0.975, count-1), 
+            margin_of_error = t_critical * se_rating,
+            lower = mean_rating - t_critical * se_rating,
+            upper = mean_rating + t_critical * se_rating
+            )
+```
+Steven Spielburg has an average IMDB rating of 7.57 while Tim Burton has an average rating of just 6.93. Furthermore, Steven has made more movies with a smaller spread across ratings, which is seen by his standard error of just 0.148. On the other hand, Tim Burton has made fewer movies with a larger discrepancy in ratings; causing him to have an standard error of 0.193.
+
+### Data Visualisation
+Judging from these numbers alone, it does indeed seem that a movie's director has an impact on the IMDB Rating. But looking at numbers can be a bit daunting, so let's try to make this a bit more appealing to look at: 
+
+``` {r}
+p <- ggplot(movies_v2, aes(mean_rating, reorder(director, mean_rating), colour = director)) +
+  labs(title = "Do Spielberg and Burton have the same mean IMDB ratings?", subtitle = "95% confidence intervals overlap", x= "Mean IMDB Rating", y = "") +
+  theme_bw() + theme(legend.position = "none") +
+  geom_point(size = 7) +
+  geom_text(aes(label = round(mean_rating, 2)), vjust = -1.2, size = 7, colour = "black") +
+  geom_text(aes(x = upper, label = round(upper, 2)), vjust = -1.6, size = 5, colour = "black") +
+  geom_text(aes(x = lower, label = round(lower, 2)), vjust = -1.6, size = 5, colour = "black") +
+  geom_errorbar(movies_v2, mapping = aes(x=mean_rating, xmin=upper, xmax=lower, y = director), width = 0.1,    size = 2.5) +
+  geom_rect(aes(xmin = lower[1], xmax = upper[2], ymin = 0, ymax = 3), colour = "grey", alpha = 0.2)
+
+p
+
+```
+
+
+## Hypothesis test with formula
+
+```{r}
+movies <- movies %>%
+  mutate(spielberg_burton = movies$director %in% c("Steven Spielberg", "Tim Burton"))
+
+movies %>% filter(!is.na(spielberg_burton)) %>% 
+  group_by(spielberg_burton) %>% 
+  summarise(count = n()) %>% 
+  mutate(prop= count/sum(count))
+
+t.test(rating ~ spielberg_burton, data = movies)
+```
+
+
+## Hypothesis test with infer
+
+```{r}
+
+obs_diff <- movies %>%
+  specify(rating ~ spielberg_burton) %>%
+  calculate(stat = "diff in means", order = c(TRUE, FALSE))
+obs_diff
+
+
+null_dist <- movies %>%
+  specify(rating ~ spielberg_burton) %>%
+  hypothesize(null = "independence") %>%
+  generate(reps = 1000, type = "permute") %>%
+  calculate(stat = "diff in means", order = c(TRUE, FALSE))
+null_dist
+
+ggplot(data = null_dist, aes(x = stat)) +
+  geom_histogram()
+  
+null_dist %>% visualize() +
+  shade_p_value(obs_stat = obs_diff, direction = "two-sided")
+
+null_dist %>%
+  get_p_value(obs_stat = obs_diff, direction = "two_sided")
+```
+
+##  Conclusion
+Using Michael Bay and James Cameron this becomes a lot more apparent - here the gap between the two confidence intervals is quite large and so **tells us that a movie's director most likely plays a role in its IMDB rating**.
