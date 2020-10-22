@@ -102,7 +102,7 @@ disqusShortname = ""
       title = "STEVEN SPIELBERG VS TIM BURTON"
       subtitle = "Who has got the best IMDB ratings?"
       image = "IMDB.jpg"
-      url = "blogs/blog8"
+      url = "blogs/blog8.Rmd"
 
     [[params.tiles.showcase]]
       title = "2016 US PRESIDENTIAL ELECTIONS"
