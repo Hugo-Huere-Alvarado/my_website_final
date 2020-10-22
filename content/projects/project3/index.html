@@ -3,7 +3,7 @@ title: "Analysis of movies - IMDB dataset"
 date: '2020-10-14'
 description: ''
 draft: no
-image: "IMDB.jpg"
+image: IMDB.jpg
 keywords: ''
 slug: "pj5"
 categories:
@@ -24,7 +24,7 @@ categories:
 <h3>Alternative Hypothesis</h3>
 <p>There is a significant difference between these mean IMDB-ratings.</p>
 <p>We will look at a subset sample of movies, taken from the <a href="https://www.kaggle.com/carolzhangdc/imdb-5000-movie-dataset">Kaggle IMDB 5000 movie dataset</a></p>
-<pre class="r"><code>movies &lt;- read_csv(here::here(&quot;data&quot;, &quot;movies.csv&quot;))
+<pre class="r"><code>movies &lt;- vroom::vroom(here::here(&quot;data&quot;, &quot;movies.csv&quot;))
 glimpse(movies)</code></pre>
 <pre><code>## Rows: 2,961
 ## Columns: 11
@@ -352,18 +352,18 @@ obs_diff</code></pre>
   calculate(stat = &quot;diff in means&quot;, order = c(TRUE, FALSE))
 null_dist</code></pre>
 <pre><code>## # A tibble: 1,000 x 2
-##    replicate    stat
-##        &lt;int&gt;   &lt;dbl&gt;
-##  1         1  0.0187
-##  2         2 -0.0488
-##  3         3  0.253 
-##  4         4 -0.228 
-##  5         5  0.273 
-##  6         6 -0.161 
-##  7         7 -0.0878
-##  8         8 -0.0359
-##  9         9 -0.197 
-## 10        10 -0.0125
+##    replicate      stat
+##        &lt;int&gt;     &lt;dbl&gt;
+##  1         1  0.115   
+##  2         2 -0.0904  
+##  3         3  0.000524
+##  4         4  0.159   
+##  5         5 -0.148   
+##  6         6 -0.00467 
+##  7         7 -0.0592  
+##  8         8  0.0603  
+##  9         9 -0.0177  
+## 10        10 -0.168   
 ## # ... with 990 more rows</code></pre>
 <pre class="r"><code>ggplot(data = null_dist, aes(x = stat)) +
   geom_histogram()</code></pre>

@@ -3,7 +3,7 @@ title: "Analysis of movies - IMDB dataset"
 date: '2020-10-14'
 description: ''
 draft: no
-image: "IMDB.jpg"
+image: IMDB.jpg
 keywords: ''
 slug: "pj5"
 categories:
@@ -62,7 +62,7 @@ There is a significant difference between these mean IMDB-ratings.
 We will look at a subset sample of movies, taken from the [Kaggle IMDB 5000 movie dataset](https://www.kaggle.com/carolzhangdc/imdb-5000-movie-dataset)
 
 ```{r,load_movies, warning=FALSE, message=FALSE}
-movies <- read_csv(here::here("data", "movies.csv"))
+movies <- vroom::vroom(here::here("data", "movies.csv"))
 glimpse(movies)
 skim(movies)
 ```
