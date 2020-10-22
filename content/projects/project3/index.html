@@ -1,27 +1,29 @@
 
 
 
-<p>title = “IMDB Ratings: Does the director play a role?”
-author = “Hugo Huere Alvarado”
-date = “2020-10-22”
+<pre><code>title = &quot;IMDB Ratings: Does the director play a role?&quot;
+author = &quot;Hugo Huere Alvarado&quot;
+date = &quot;2020-10-22&quot;
 output:
-html_document:
-theme: flatly
-highlight: zenburn
-number_sections: yes
-toc: yes
-toc_float: yes
-code_folding: show</p>
+  html_document:
+    theme : flatly
+    highlight: zenburn
+    number_sections = yes
+    toc: yes
+    toc_float: yes
+    code_folding: show</code></pre>
 <div id="imdb-ratings-differences-between-directors" class="section level1">
 <h1>IMDB ratings: Differences between directors</h1>
-<p>Recall the IMBD ratings data. I would like you to explore whether the mean IMDB rating for Steven Spielberg and Tim Burton are the same or not. I have already calculated the confidence intervals for the mean ratings of these two directors and as you can see they overlap.</p>
-<p><img src="C:/Users/hugo_/Documents/Work/MSc Finance/LBS MFA/Courses/02 Data Analytics/00 Git & RStudio/my_website_final/images/directors.png" width="100%" style="display: block; margin: auto;" /></p>
-<p>First, I would like you to reproduce this graph. You may find <code>geom_errorbar()</code> and <code>geom_rect()</code> useful.</p>
-<p>In addition, you will run a hypothesis test. You should use both the <code>t.test</code> command and the <code>infer</code> package to simulate from a null distribution, where you assume zero difference between the two.</p>
-<blockquote>
-<p>Before anything, write down the null and alternative hypotheses, as well as the resulting test statistic and the associated t-stat or p-value. At the end of the day, what do you conclude?</p>
-</blockquote>
-<p>You can load the data and examine its structure</p>
+<p>This project was done to research whether the IMDB rating for blockbuster movies were influenced by the director. Before looking at any kind of data, a null hypothesis and alternative hypothesis were set up as follows:</p>
+<div id="null-hypothesis" class="section level3">
+<h3>Null Hypothesis</h3>
+<ul>
+<li>H0 there is no difference in the mean IMDB-rating for movies produced by Steven Spielberg or Tim Burton.</li>
+</ul>
+</div>
+<div id="alternative-hypothesis" class="section level3">
+<h3>ALternative Hypothesis</h3>
+<p>First, let us load the data into R:</p>
 <pre class="r"><code>movies &lt;- read_csv(here::here(&quot;data&quot;, &quot;movies.csv&quot;))
 glimpse(movies)</code></pre>
 <pre><code>## Rows: 2,961
@@ -37,6 +39,7 @@ glimpse(movies)</code></pre>
 ## $ votes               &lt;dbl&gt; 886204, 793059, 418214, 995415, 1676169, 534658...
 ## $ reviews             &lt;dbl&gt; 3777, 2843, 1934, 2425, 5312, 3917, 1752, 1752,...
 ## $ rating              &lt;dbl&gt; 7.9, 7.7, 7.0, 8.1, 9.0, 6.5, 8.7, 7.5, 8.5, 7....</code></pre>
+</div>
 </div>
 <div id="your-r-code-and-analysis-should-go-here.-if-you-want-to-insert-a-blank-chunk-of-r-code-you-can-just-hit-ctrlcmdalti" class="section level1">
 <h1>Your R code and analysis should go here. If you want to insert a blank chunk of R code you can just hit <code>Ctrl/Cmd+Alt+I</code></h1>
@@ -111,18 +114,18 @@ obs_diff</code></pre>
   calculate(stat = &quot;diff in means&quot;, order = c(TRUE, FALSE))
 null_dist</code></pre>
 <pre><code>## # A tibble: 1,000 x 2
-##    replicate    stat
-##        &lt;int&gt;   &lt;dbl&gt;
-##  1         1  0.344 
-##  2         2  0.0161
-##  3         3  0.0915
-##  4         4  0.224 
-##  5         5  0.0837
-##  6         6 -0.129 
-##  7         7 -0.145 
-##  8         8 -0.116 
-##  9         9  0.169 
-## 10        10 -0.207 
+##    replicate     stat
+##        &lt;int&gt;    &lt;dbl&gt;
+##  1         1 -0.194  
+##  2         2 -0.00207
+##  3         3  0.102  
+##  4         4 -0.0462 
+##  5         5  0.0395 
+##  6         6  0.0525 
+##  7         7  0.112  
+##  8         8 -0.106  
+##  9         9 -0.148  
+## 10        10  0.0785 
 ## # ... with 990 more rows</code></pre>
 <pre class="r"><code>ggplot(data = null_dist, aes(x = stat)) +
   geom_histogram()</code></pre>
