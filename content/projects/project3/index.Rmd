@@ -2,6 +2,7 @@
 title: "IMDB Ratings: Steven Spielberg vs Tim Burton"
 author: "Hugo Huere Alvarado"
 date: '2020-10-11'
+image: IMDB.jpg
 output:
   html_document:
     theme: flatly
@@ -76,10 +77,10 @@ Besides the obvious variables of `title`, `genre`, `director`, `year`, and `dura
 
 Are there any missing values (NAs)? Are all entries distinct or are there duplicate entries?
 
-**No missing but many duplicates across categories. There are 2961 rows and only 2907 unique movie titles, so it can be inferred that some movies show more than 1 times with different genres.**
+**No missing but many duplicates across categories. There are 2961 rows and only 2907 unique movie titles, so it can be inferred that some movies show more than one time with different genres.**
 
 
-Then I manipulate the data set so that only Steven Spielburg and Tim Burton are evaluated.
+Then, I manipulate the data set so that only Steven Spielburg and Tim Burton are evaluated.
 
 ```{r}
 movies_v1 <- movies %>% filter(director == "Steven Spielberg" | director == "Tim Burton") %>% select(director | rating)
