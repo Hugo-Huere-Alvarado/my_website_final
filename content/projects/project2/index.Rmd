@@ -161,7 +161,7 @@ p4 <- plots(0,"Male","No") +
   scale_x_continuous(limits=c(0, 50))
 ```
 
-```{r, cache=FALSE, warning=FALSE, message=FALSE, echo=FALSE,}
+```{r, cache= TRUE, fig.width = 30, fig.height=16}
 big_plot1 <- grid.arrange(p1,p2,p3,p4,
               nrow = 2, 
               top = textGrob("Covid death % by age group, sex and presence of co-morbidities",
@@ -198,7 +198,7 @@ g4 <- plots(1,"Male","No") +
   scale_x_continuous(limits=c(0, 80))
 ```
 
-```{r, cache=FALSE,  warning=FALSE, message=FALSE, echo=FALSE,}
+```{r, cache=TRUE, fig.width = 30, fig.height=16}
 big_plot2 <- grid.arrange(g1, g2, g3, g4,
               nrow = 2,
               top = textGrob("Covid death % by age group, sex and whether patient was admitted to ICU",
@@ -207,7 +207,7 @@ big_plot2 <- grid.arrange(g1, g2, g3, g4,
 
 As a final step, we can plot the conclusive graphs for our vision.
 
-```{r covid_challenge, echo=FALSE, fig.width = 30, fig.height=16, out.width="100%"}
+```{r covid_challenge, echo=FALSE, fig.width = 30, fig.height=20, out.width="100%"}
 grid.arrange(big_plot1, big_plot2, nrow=2)
 
 knitr::include_graphics(here::here("images", "covid_death_rate_comorbidities.png"), error = FALSE)

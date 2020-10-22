@@ -156,7 +156,11 @@ p1 &lt;- plots(0,&quot;Female&quot;,&quot;Yes&quot;) +
   scale_x_continuous(limits=c(0, 50))</code></pre>
 <pre><code>## [1]  0.2  0.0  0.2  0.3  0.9  2.3  3.8  9.9 30.0
 ## [1] 9</code></pre>
-<p><img src="index_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
+<pre class="r"><code>big_plot1 &lt;- grid.arrange(p1,p2,p3,p4,
+              nrow = 2, 
+              top = textGrob(&quot;Covid death % by age group, sex and presence of co-morbidities&quot;,
+              gp=gpar(fontsize=20,font=3)))</code></pre>
+<p><img src="index_files/figure-html/unnamed-chunk-2-1.png" width="2880" /></p>
 <pre class="r"><code>g1 &lt;- plots(1,&quot;Female&quot;,&quot;Yes&quot;) +
   facet_grid(~&quot;Female&quot; ) +
   theme(axis.title = element_blank(),
@@ -188,6 +192,10 @@ p1 &lt;- plots(0,&quot;Female&quot;,&quot;Yes&quot;) +
   scale_x_continuous(limits=c(0, 80))</code></pre>
 <pre><code>## [1]  0.0  0.0  0.1  0.3  0.6  1.8  5.4 14.3 39.6
 ## [1] 9</code></pre>
-<p><img src="index_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+<pre class="r"><code>big_plot2 &lt;- grid.arrange(g1, g2, g3, g4,
+              nrow = 2,
+              top = textGrob(&quot;Covid death % by age group, sex and whether patient was admitted to ICU&quot;,
+              gp=gpar(fontsize=20, font=3)))</code></pre>
+<p><img src="index_files/figure-html/unnamed-chunk-4-1.png" width="2880" /></p>
 <p>As a final step, we can plot the conclusive graphs for our vision.</p>
 <p><img src="index_files/figure-html/covid_challenge-1.png" width="100%" /><img src="C:/Users/hugo_/Documents/Work/MSc Finance/LBS MFA/Courses/02 Data Analytics/00 Git & RStudio/my_website_final/images/covid_death_rate_comorbidities.png" width="100%" /><img src="C:/Users/hugo_/Documents/Work/MSc Finance/LBS MFA/Courses/02 Data Analytics/00 Git & RStudio/my_website_final/images/covid_death_rate_icu.png" width="100%" /></p>
