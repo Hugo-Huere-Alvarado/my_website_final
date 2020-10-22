@@ -1,5 +1,6 @@
 ---
 title: "IMDB Ratings: Steven Spielberg vs Tim Burton"
+author: "Hugo Huere Alvarado"
 date: '2020-10-11'
 output:
   html_document:
@@ -50,8 +51,6 @@ library(infer)
 library(vroom)
 ```
 
-
-# IMDB ratings: Differences between directors
 This project was done to research whether the IMDB rating for blockbuster movies were influenced by the director. Before looking at any kind of data, a null hypothesis and alternative hypothesis were set up as follows: 
 
 ### Null Hypothesis
@@ -65,7 +64,6 @@ We will look at a subset sample of movies, taken from the [Kaggle IMDB 5000 movi
 ```{r,load_movies, warning=FALSE, message=FALSE}
 movies <- vroom::vroom(here::here("data", "movies.csv"))
 glimpse(movies)
-skim(movies)
 ```
 Besides the obvious variables of `title`, `genre`, `director`, `year`, and `duration`, the rest of the variables are as follows:
 
@@ -82,6 +80,7 @@ Are there any missing values (NAs)? Are all entries distinct or are there duplic
 
 
 Then I manipulate the data set so that only Steven Spielburg and Tim Burton are evaluated.
+
 ```{r}
 movies_v1 <- movies %>% filter(director == "Steven Spielberg" | director == "Tim Burton") %>% select(director | rating)
 
@@ -102,7 +101,7 @@ Steven Spielburg has an average IMDB rating of 7.57 while Tim Burton has an aver
 ### Data Visualisation
 Judging from these numbers alone, it does indeed seem that a movie's director has an impact on the IMDB Rating. But looking at numbers can be a bit daunting, so let's try to make this a bit more appealing to look at: 
 
-``` {r}
+``` {r, warning=FALSE, message=FALSE, echo=FALSE, fig.width=13}
 p <- ggplot(movies_v2, aes(mean_rating, reorder(director, mean_rating), colour = director)) +
   labs(title = "Do Spielberg and Burton have the same mean IMDB ratings?", subtitle = "95% confidence intervals overlap", x= "Mean IMDB Rating", y = "") +
   theme_bw() + theme(legend.position = "none") +

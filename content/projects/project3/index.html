@@ -1,5 +1,6 @@
 ---
 title: "IMDB Ratings: Steven Spielberg vs Tim Burton"
+author: "Hugo Huere Alvarado"
 date: '2020-10-11'
 output:
   html_document:
@@ -13,8 +14,6 @@ output:
 
 
 
-<div id="imdb-ratings-differences-between-directors" class="section level1">
-<h1>IMDB ratings: Differences between directors</h1>
 <p>This project was done to research whether the IMDB rating for blockbuster movies were influenced by the director. Before looking at any kind of data, a null hypothesis and alternative hypothesis were set up as follows:</p>
 <div id="null-hypothesis" class="section level3">
 <h3>Null Hypothesis</h3>
@@ -39,232 +38,6 @@ glimpse(movies)</code></pre>
 ## $ votes               &lt;dbl&gt; 886204, 793059, 418214, 995415, 1676169, 534658...
 ## $ reviews             &lt;dbl&gt; 3777, 2843, 1934, 2425, 5312, 3917, 1752, 1752,...
 ## $ rating              &lt;dbl&gt; 7.9, 7.7, 7.0, 8.1, 9.0, 6.5, 8.7, 7.5, 8.5, 7....</code></pre>
-<pre class="r"><code>skim(movies)</code></pre>
-<table>
-<caption>(#tab:load_movies)Data summary</caption>
-<tbody>
-<tr class="odd">
-<td align="left">Name</td>
-<td align="left">movies</td>
-</tr>
-<tr class="even">
-<td align="left">Number of rows</td>
-<td align="left">2961</td>
-</tr>
-<tr class="odd">
-<td align="left">Number of columns</td>
-<td align="left">11</td>
-</tr>
-<tr class="even">
-<td align="left">_______________________</td>
-<td align="left"></td>
-</tr>
-<tr class="odd">
-<td align="left">Column type frequency:</td>
-<td align="left"></td>
-</tr>
-<tr class="even">
-<td align="left">character</td>
-<td align="left">3</td>
-</tr>
-<tr class="odd">
-<td align="left">numeric</td>
-<td align="left">8</td>
-</tr>
-<tr class="even">
-<td align="left">________________________</td>
-<td align="left"></td>
-</tr>
-<tr class="odd">
-<td align="left">Group variables</td>
-<td align="left">None</td>
-</tr>
-</tbody>
-</table>
-<p><strong>Variable type: character</strong></p>
-<table>
-<thead>
-<tr class="header">
-<th align="left">skim_variable</th>
-<th align="right">n_missing</th>
-<th align="right">complete_rate</th>
-<th align="right">min</th>
-<th align="right">max</th>
-<th align="right">empty</th>
-<th align="right">n_unique</th>
-<th align="right">whitespace</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td align="left">title</td>
-<td align="right">0</td>
-<td align="right">1</td>
-<td align="right">1</td>
-<td align="right">83</td>
-<td align="right">0</td>
-<td align="right">2907</td>
-<td align="right">0</td>
-</tr>
-<tr class="even">
-<td align="left">genre</td>
-<td align="right">0</td>
-<td align="right">1</td>
-<td align="right">5</td>
-<td align="right">11</td>
-<td align="right">0</td>
-<td align="right">17</td>
-<td align="right">0</td>
-</tr>
-<tr class="odd">
-<td align="left">director</td>
-<td align="right">0</td>
-<td align="right">1</td>
-<td align="right">3</td>
-<td align="right">32</td>
-<td align="right">0</td>
-<td align="right">1366</td>
-<td align="right">0</td>
-</tr>
-</tbody>
-</table>
-<p><strong>Variable type: numeric</strong></p>
-<table>
-<colgroup>
-<col width="13%" />
-<col width="6%" />
-<col width="9%" />
-<col width="6%" />
-<col width="6%" />
-<col width="4%" />
-<col width="6%" />
-<col width="6%" />
-<col width="6%" />
-<col width="6%" />
-<col width="28%" />
-</colgroup>
-<thead>
-<tr class="header">
-<th align="left">skim_variable</th>
-<th align="right">n_missing</th>
-<th align="right">complete_rate</th>
-<th align="right">mean</th>
-<th align="right">sd</th>
-<th align="right">p0</th>
-<th align="right">p25</th>
-<th align="right">p50</th>
-<th align="right">p75</th>
-<th align="right">p100</th>
-<th align="left">hist</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td align="left">year</td>
-<td align="right">0</td>
-<td align="right">1</td>
-<td align="right">2.00e+03</td>
-<td align="right">9.95e+00</td>
-<td align="right">1920.0</td>
-<td align="right">2.00e+03</td>
-<td align="right">2.00e+03</td>
-<td align="right">2.01e+03</td>
-<td align="right">2.02e+03</td>
-<td align="left">▁▁▁▂▇</td>
-</tr>
-<tr class="even">
-<td align="left">duration</td>
-<td align="right">0</td>
-<td align="right">1</td>
-<td align="right">1.10e+02</td>
-<td align="right">2.22e+01</td>
-<td align="right">37.0</td>
-<td align="right">9.50e+01</td>
-<td align="right">1.06e+02</td>
-<td align="right">1.19e+02</td>
-<td align="right">3.30e+02</td>
-<td align="left">▃▇▁▁▁</td>
-</tr>
-<tr class="odd">
-<td align="left">gross</td>
-<td align="right">0</td>
-<td align="right">1</td>
-<td align="right">5.81e+07</td>
-<td align="right">7.25e+07</td>
-<td align="right">703.0</td>
-<td align="right">1.23e+07</td>
-<td align="right">3.47e+07</td>
-<td align="right">7.56e+07</td>
-<td align="right">7.61e+08</td>
-<td align="left">▇▁▁▁▁</td>
-</tr>
-<tr class="even">
-<td align="left">budget</td>
-<td align="right">0</td>
-<td align="right">1</td>
-<td align="right">4.06e+07</td>
-<td align="right">4.37e+07</td>
-<td align="right">218.0</td>
-<td align="right">1.10e+07</td>
-<td align="right">2.60e+07</td>
-<td align="right">5.50e+07</td>
-<td align="right">3.00e+08</td>
-<td align="left">▇▂▁▁▁</td>
-</tr>
-<tr class="odd">
-<td align="left">cast_facebook_likes</td>
-<td align="right">0</td>
-<td align="right">1</td>
-<td align="right">1.24e+04</td>
-<td align="right">2.05e+04</td>
-<td align="right">0.0</td>
-<td align="right">2.24e+03</td>
-<td align="right">4.60e+03</td>
-<td align="right">1.69e+04</td>
-<td align="right">6.57e+05</td>
-<td align="left">▇▁▁▁▁</td>
-</tr>
-<tr class="even">
-<td align="left">votes</td>
-<td align="right">0</td>
-<td align="right">1</td>
-<td align="right">1.09e+05</td>
-<td align="right">1.58e+05</td>
-<td align="right">5.0</td>
-<td align="right">1.99e+04</td>
-<td align="right">5.57e+04</td>
-<td align="right">1.33e+05</td>
-<td align="right">1.69e+06</td>
-<td align="left">▇▁▁▁▁</td>
-</tr>
-<tr class="odd">
-<td align="left">reviews</td>
-<td align="right">0</td>
-<td align="right">1</td>
-<td align="right">5.03e+02</td>
-<td align="right">4.94e+02</td>
-<td align="right">2.0</td>
-<td align="right">1.99e+02</td>
-<td align="right">3.64e+02</td>
-<td align="right">6.31e+02</td>
-<td align="right">5.31e+03</td>
-<td align="left">▇▁▁▁▁</td>
-</tr>
-<tr class="even">
-<td align="left">rating</td>
-<td align="right">0</td>
-<td align="right">1</td>
-<td align="right">6.39e+00</td>
-<td align="right">1.05e+00</td>
-<td align="right">1.6</td>
-<td align="right">5.80e+00</td>
-<td align="right">6.50e+00</td>
-<td align="right">7.10e+00</td>
-<td align="right">9.30e+00</td>
-<td align="left">▁▁▆▇▁</td>
-</tr>
-</tbody>
-</table>
 <p>Besides the obvious variables of <code>title</code>, <code>genre</code>, <code>director</code>, <code>year</code>, and <code>duration</code>, the rest of the variables are as follows:</p>
 <ul>
 <li><code>gross</code> : The gross earnings in the US box office, not adjusted for inflation</li>
@@ -295,18 +68,7 @@ movies_v2 &lt;- movies_v1 %&gt;%
 <div id="data-visualisation" class="section level3">
 <h3>Data Visualisation</h3>
 <p>Judging from these numbers alone, it does indeed seem that a movie’s director has an impact on the IMDB Rating. But looking at numbers can be a bit daunting, so let’s try to make this a bit more appealing to look at:</p>
-<pre class="r"><code>p &lt;- ggplot(movies_v2, aes(mean_rating, reorder(director, mean_rating), colour = director)) +
-  labs(title = &quot;Do Spielberg and Burton have the same mean IMDB ratings?&quot;, subtitle = &quot;95% confidence intervals overlap&quot;, x= &quot;Mean IMDB Rating&quot;, y = &quot;&quot;) +
-  theme_bw() + theme(legend.position = &quot;none&quot;) +
-  geom_point(size = 7) +
-  geom_text(aes(label = round(mean_rating, 2)), vjust = -1.2, size = 7, colour = &quot;black&quot;) +
-  geom_text(aes(x = upper, label = round(upper, 2)), vjust = -1.6, size = 5, colour = &quot;black&quot;) +
-  geom_text(aes(x = lower, label = round(lower, 2)), vjust = -1.6, size = 5, colour = &quot;black&quot;) +
-  geom_errorbar(movies_v2, mapping = aes(x=mean_rating, xmin=upper, xmax=lower, y = director), width = 0.1,    size = 2.5) +
-  geom_rect(aes(xmin = lower[1], xmax = upper[2], ymin = 0, ymax = 3), colour = &quot;grey&quot;, alpha = 0.2)
-
-p</code></pre>
-<p><img src="index_files/figure-html/unnamed-chunk-2-1.png" width="648" style="display: block; margin: auto;" /></p>
+<p><img src="index_files/figure-html/unnamed-chunk-2-1.png" width="1248" style="display: block; margin: auto;" /></p>
 </div>
 <div id="hypothesis-test-with-formula" class="section level2">
 <h2>Hypothesis test with formula</h2>
@@ -354,16 +116,16 @@ null_dist</code></pre>
 <pre><code>## # A tibble: 1,000 x 2
 ##    replicate    stat
 ##        &lt;int&gt;   &lt;dbl&gt;
-##  1         1  0.289 
-##  2         2 -0.270 
-##  3         3 -0.119 
-##  4         4  0.117 
-##  5         5  0.463 
-##  6         6 -0.0982
-##  7         7  0.0291
-##  8         8  0.221 
-##  9         9  0.0369
-## 10        10  0.0967
+##  1         1 -0.103 
+##  2         2 -0.218 
+##  3         3 -0.0385
+##  4         4 -0.0151
+##  5         5  0.172 
+##  6         6 -0.244 
+##  7         7  0.0239
+##  8         8  0.0811
+##  9         9  0.156 
+## 10        10 -0.187 
 ## # ... with 990 more rows</code></pre>
 <pre class="r"><code>ggplot(data = null_dist, aes(x = stat)) +
   geom_histogram()</code></pre>
@@ -381,5 +143,4 @@ null_dist</code></pre>
 <div id="conclusion" class="section level2">
 <h2>Conclusion</h2>
 <p>Using Michael Bay and James Cameron this becomes a lot more apparent - here the gap between the two confidence intervals is quite large and so <strong>tells us that a movie’s director most likely plays a role in its IMDB rating</strong>.</p>
-</div>
 </div>
