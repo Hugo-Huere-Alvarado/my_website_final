@@ -92,7 +92,7 @@ Glimpse and skim are two of my favourite functions (others being *table*, *favst
 - **Glimpse** gives us a summary of the variables and observations included.
 - **Skim** provides us with useful information concerning the missing data, a.k.a. NAs
 
-```{r rows_and_columns}
+```{r rows_and_columns, include=FALSE}
 glimpse(listings)
 skim(listings)
 ```
@@ -106,7 +106,7 @@ dplyr::select(host_is_superhost, neighbourhood_cleansed, latitude, longitude, is
 
 ```
 
-Looking through the raw data set, We will drop variable **square_feet** because most airbnb houses (21,758) do not provide it so it will not be a meaningful predictive variable and a large amount of NA values will influence our analysis later.
+Looking through the raw data set, we will drop variable **square_feet** because most airbnb houses (21,758) do not provide it so it will not be a meaningful predictive variable and a large amount of NA values will influence our analysis later.
 
 ```{r}
 tidy_listings <- tidy_listings %>% 
@@ -128,7 +128,7 @@ Moreover, as we only care about houses that offer four-night renting, we filter 
 
 Lastly, We also create a new variable named **price_4_nights** to calculate the total cost for two people to stay at the Airbnb property for 4 nights.
 
-```{r datamanipulation}
+```{r datamanipulation1}
 ### Changing characters variables to numerical ones
 tidy_listings <- tidy_listings %>%
   mutate(price = parse_number(price), cleaning_fee = parse_number(cleaning_fee), 
@@ -147,8 +147,6 @@ tidy_listings <- tidy_listings %>%
     TRUE ~ "Tlalpan"
   ))
 
-table(tidy_listings$neighbourhood_simplified)
-
 ### Creating amenities_clean variable 
 tidy_listings <- tidy_listings %>% 
   mutate(amenities_clean = count.fields(textConnection(amenities), sep = ","))
@@ -162,11 +160,17 @@ tidy_listings <- tidy_listings %>%
     property_type %in% c("Apartment","House", "Condominium","Loft") ~ property_type, 
     TRUE ~ "Other"
   ))
+```
 
+
+```{r datamanipulation2, include=FALSE}
 tidy_listings %>%
   count(property_type, prop_type_simplified) %>%
   arrange(desc(n))
+```
 
+
+```{r datamanipulation3}
 ### Filtering minimum nights lower than or equal to 4 nights
 tidy_listings <- filter(tidy_listings, minimum_nights <= 4)
 
@@ -204,6 +208,16 @@ Let us drop all the rows which include NA values in our data set.
 
 The point is that we cannot keep missing observations because they will mess up our regressions later in the analysis.
 ```{r}
+#tidy_listings %>%
+  #dplyr::filter(!is.na(number_of_reviews),
+         #!is.na(bathrooms),
+         #!is.na(bedrooms),
+         #!is.na(beds),
+         #!is.na(review_scores_rating),
+         #!is.na(cancellation_policy))
+```
+
+```{r message=FALSE, include=FALSE, warnings=FALSE}
 tidy_listings %>%
   dplyr::filter(!is.na(number_of_reviews),
          !is.na(bathrooms),
@@ -214,7 +228,7 @@ tidy_listings %>%
 
 ```
 
-## Visualizations
+## Visualisations
 My favourite part comes with nice plots and graphs about different variables for a clearer visualisation of the dataset.
 
 ### Price variable analysis
@@ -251,7 +265,7 @@ Then, we plot out the density plot of price_4_nights and find out that the distr
 
 ### General overview
 We use the function GGally::ggpairs() to grab anb overview of the distributions and correlations in our dataset.
-```{r, fig.width=27, fig.height=27}
+```{r, fig.width=27, fig.height=27, out.width="100%"}
 
 ggpairs1 <- tidy_listings %>%
  dplyr::select( price, cleaning_fee, extra_people, number_of_reviews,
