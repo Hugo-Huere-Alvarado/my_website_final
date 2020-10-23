@@ -26,8 +26,9 @@ output:
 <script src="index_files/leaflet-providers-plugin/leaflet-providers-plugin.js"></script>
 
 
-<p>#Overview
-Using Airbnb data, we created a model with the aim to analyse data about Airbnb listings and <strong>predict the total cost for two people staying four nights in Mexico city</strong>.</p>
+<div id="overview" class="section level1">
+<h1>Overview</h1>
+<p>Using Airbnb data, we created a model with the aim to analyse data about Airbnb listings and <strong>predict the total cost for two people staying four nights in Mexico city</strong>.</p>
 <p>To create a successful model we had to:
 - Apply data-cleaning techniques to extract data from Airbnb list and create a dataset.
 - Use descriptive statistics to conduct data modification and relevant analysis.
@@ -38,12 +39,13 @@ Using Airbnb data, we created a model with the aim to analyse data about Airbnb 
 - N. of bathrooms
 - N. of bedrooms .</p>
 <p>The model predicts that an apartment with a private room in Tlalpan (M.C.) which has over 15 reviews and an average
-review score above 95 will cost, on average, 2063 MXN $ with a 95% confidence interval ranging from 2035 to 2090.</p>
+review score above 95/100 will cost, on average, 2,063 MXN $ with a 95% confidence interval ranging from 2,035 to 2,090.</p>
 <div id="loading-the-data" class="section level3">
 <h3>Loading the data</h3>
 <p>We use as source: www.insideairbnb.com
 Airbnb listings data was scraped directlyfrom airbnb.com</p>
 <pre class="r"><code>listings &lt;- vroom::vroom(&quot;http://data.insideairbnb.com/mexico/df/mexico-city/2020-06-20/data/listings.csv.gz&quot;)</code></pre>
+</div>
 </div>
 <div id="exploratory-data-analysis-eda" class="section level1">
 <h1>Exploratory Data Analysis (EDA)</h1>
@@ -898,7 +900,7 @@ model2</code></pre>
 ##                           9.637                         -565.933  
 ##           room_typePrivate room             room_typeShared room  
 ##                       -2855.795                        -3492.220</code></pre>
-<p>For each increase in review_scores_rating, the price of 2 people for 4 nights will increase by 10.24. If the property type is condominium, the price of 2 people for 4 nights will increase by 229.18; if the property type is house, the price of 2 people for 4 nights will decrease by 1322.8;If the property type is loft, the price of 2 people for 4 nights will increase by 180.51; If the property type is other, the price of 2 people for 4 nights will decrease by 425.48.</p>
+<p>For each increase in review_scores_rating, the price of two people for 4 nights will increase by 10.24. If the property type is condominium, the price of 2 people for 4 nights will increase by 229.18; if the property type is house, the price of 2 people for 4 nights will decrease by 1322.8;If the property type is loft, the price of 2 people for 4 nights will increase by 180.51; If the property type is other, the price of 2 people for 4 nights will decrease by 425.48.</p>
 </div>
 <div id="outcomes-and-concerns" class="section level1">
 <h1>Outcomes and concerns</h1>

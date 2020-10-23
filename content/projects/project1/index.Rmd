@@ -28,7 +28,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-#Overview
+# Overview
 Using Airbnb data, we created a model with the aim to analyse data about Airbnb listings and **predict the total cost for two people staying four nights in Mexico city**.
 
 To create a successful model we had to:
@@ -43,7 +43,7 @@ Our final model takes into consideration the:
 - N. of bedrooms .
 
 The model predicts that an apartment with a private room in Tlalpan (M.C.) which has over 15 reviews and an average
-review score above 95 will cost, on average, 2063 MXN $ with a 95% confidence interval ranging from 2035 to 2090.
+review score above 95/100 will cost, on average, 2,063 MXN $ with a 95% confidence interval ranging from 2,035 to 2,090.
 
 ```{r load-libraries, warning=FALSE, message=FALSE, echo=FALSE}
 # Loading all libraries
@@ -566,7 +566,7 @@ model1
 model2 <- lm(price_4_nights ~ prop_type_simplified + number_of_reviews + review_scores_rating + room_type, data = tidy_listings)
 model2
 ```
-For each increase in review_scores_rating, the price of 2 people for 4 nights will increase by 10.24. If the property type is condominium, the price of 2 people for 4 nights will increase by 229.18; if the property type is house, the price of 2 people for 4 nights will decrease by 1322.8;If the property type is loft, the price of 2 people for 4 nights will increase by 180.51; If the property type is other, the price of 2 people for 4 nights will decrease by 425.48.
+For each increase in review_scores_rating, the price of two people for 4 nights will increase by 10.24. If the property type is condominium, the price of 2 people for 4 nights will increase by 229.18; if the property type is house, the price of 2 people for 4 nights will decrease by 1322.8;If the property type is loft, the price of 2 people for 4 nights will increase by 180.51; If the property type is other, the price of 2 people for 4 nights will decrease by 425.48.
 
 # Outcomes and concerns
 - To check that our results were valid we searched Airbnb to find out the rough cost of two people staying four nights in Tlalpan (Mexico City) the results showed an average price of 2,100 MXN$ which is comparable our findings .

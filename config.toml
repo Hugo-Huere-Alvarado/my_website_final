@@ -110,11 +110,11 @@ disqusShortname = ""
       image = "US_pres.jpg"
       url = "projects/project4"
 
-    #[[params.tiles.showcase]]
-      #title = "Consequat"
-      #subtitle = "Ipsum Dolor Sit Amet"
-      #image = "pic05.jpg"
-      #url = "blogs/ipsum"
+    [[params.tiles.showcase]]
+      title = "Among Us"
+      subtitle = "Best game of the lock-down"
+      image = "among_us.jpg"
+      url = "blogs/ipsum"
 
     #[[params.tiles.showcase]]
       #title = "Etiam"
