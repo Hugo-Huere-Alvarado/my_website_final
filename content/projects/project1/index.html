@@ -29,17 +29,20 @@ output:
 <div id="overview" class="section level1">
 <h1>Overview</h1>
 <p>Using Airbnb data, we created a model with the aim to analyse data about Airbnb listings and <strong>predict the total cost for two people staying four nights in Mexico city</strong>.</p>
-<p>To create a successful model we had to:
-- Apply data-cleaning techniques to extract data from Airbnb list and create a dataset.
-- Use descriptive statistics to conduct data modification and relevant analysis.
-- Apply multi-regression modeling to visualize and analyze the data that we have collected.</p>
-<p>Our final model takes into consideration the:
-- Neighbourhood
-- Room type
-- N. of bathrooms
-- N. of bedrooms .</p>
-<p>The model predicts that an apartment with a private room in Tlalpan (M.C.) which has over 15 reviews and an average
-review score above 95/100 will cost, on average, 2,063 MXN $ with a 95% confidence interval ranging from 2,035 to 2,090.</p>
+<p>To create a successful model we had to:</p>
+<ul>
+<li>Apply data-cleaning techniques to extract data from Airbnb list and create a dataset.</li>
+<li>Use descriptive statistics to conduct data modification and relevant analysis.
+Apply multi-regression modeling to visualize and analyze the data that we have collected.</li>
+</ul>
+<p>Our final model takes into consideration the:</p>
+<ul>
+<li>Neighbourhood</li>
+<li>Room type</li>
+<li>N. of bathrooms</li>
+<li>N. of bedrooms</li>
+</ul>
+<p>The model predicts that an apartment with a private room in the neighbourhoood of Tlalpan, Mexico City, which has over 15 reviews and an average review score above 95/100 will cost, on average, 2,063 MXN$ with a 95% confidence interval ranging from 2,035 to 2,090.</p>
 <div id="loading-the-data" class="section level3">
 <h3>Loading the data</h3>
 <p>We use as source: www.insideairbnb.com
@@ -53,15 +56,17 @@ Airbnb listings data was scraped directlyfrom airbnb.com</p>
 <h2>Inspecting the data</h2>
 <p>In the original data set, we collected <strong>21,824</strong> values across <strong>106 variables</strong> of which 52 are character, 15 are logical, and 38 are numerical. As we can tell, many variables are either URLs or descriptions which could not be used as predictive variables.</p>
 <p>Thus, we first applied glimpse and skim to look through the data set and chose what we believe could be used in the later analysis stage.</p>
-<p>Glimpse and skim are two of my favourite functions (others being <em>table</em>, <em>favstats</em>, and <em>summary</em>) allow us to understand better the dataset we are working with,
-- <strong>Glimpse</strong> gives us a summary of the variables and observations included.
-- <strong>Skim</strong> provides us with useful information concerning the missing data, a.k.a. NAs</p>
+<p>Glimpse and skim are two of my favourite functions (others being <em>table</em>, <em>favstats</em>, and <em>summary</em>) allow us to understand better the dataset we are working with:</p>
+<ul>
+<li><strong>Glimpse</strong> gives us a summary of the variables and observations included.</li>
+<li><strong>Skim</strong> provides us with useful information concerning the missing data, a.k.a. NAs</li>
+</ul>
 <p>Here, we start selecting specific variable that may be useful for our deep analysis later in the process.</p>
 <pre class="r"><code>tidy_listings &lt;- listings %&gt;% 
 dplyr::select(host_is_superhost, neighbourhood_cleansed, latitude, longitude, is_location_exact, property_type, room_type,
               bathrooms, bedrooms, beds, square_feet, price, cleaning_fee, extra_people, number_of_reviews, review_scores_rating,
               cancellation_policy, availability_365, amenities, host_identity_verified, minimum_nights, guests_included)</code></pre>
-<p>Looking through the raw data set, we will drop variable <strong>square_feet</strong> because most airbnb houses (21,758) do not provide it so it will not be a meaningful predictive variable and a large amount of NA values will influence our analysis later.</p>
+<p>Looking through the raw data set, we will drop variable <strong>square_feet</strong> because most airbnb houses (21,758) do not provide it, so it will not be a meaningful predictive variable and a large amount of NA values will influence our analysis later.</p>
 <pre class="r"><code>tidy_listings &lt;- tidy_listings %&gt;% 
 dplyr::select(-square_feet)</code></pre>
 </div>
@@ -71,8 +76,8 @@ dplyr::select(-square_feet)</code></pre>
 <p>Also, it is not meaningful to have too many <strong>neighbourhoods</strong> for our later analysis. Thus, we use six neighbourhoods with the largest Airbnb counts and combine other neighbourhoods into these six according to geographical closeness.</p>
 <p>Besides, <strong>amenities</strong> are in lists right now which could not be used to predict price so we create a new variable named amenities_clean that stores amenity counts.</p>
 <p>Since the vast majority of the observations in the data are one of the top four or five <strong>property types</strong>, we would like to create a simplified version of property_type variable that has five categories: the top four categories and Other.</p>
-<p>Moreover, as we only care about houses that offer four-night renting, we filter data set to only include <strong>minimum nights</strong> less than or equal to 4 nights.</p>
-<p>Lastly, We also create a new variable named <strong>price_4_nights</strong> to calculate the total cost for two people to stay at the Airbnb property for 4 nights.</p>
+<p>Moreover, as we only care about houses that offer four-night renting, we filter data set to only include <strong>minimum nights</strong> less than or equal to four nights.</p>
+<p>Lastly, We also create a new variable named <strong>price_4_nights</strong> to calculate the total cost for two people to stay at the Airbnb property for four nights.</p>
 <pre class="r"><code>### Changing characters variables to numerical ones
 tidy_listings &lt;- tidy_listings %&gt;%
   mutate(price = parse_number(price), cleaning_fee = parse_number(cleaning_fee), 
@@ -137,7 +142,7 @@ We assumed ‘NA’ values appear when the host has left the additional <strong>
 <h2>Handling Missing values</h2>
 <p>Let us drop all the rows which include NA values in our data set.</p>
 <p>The point is that we cannot keep missing observations because they will mess up our regressions later in the analysis.</p>
-<pre class="r"><code>#tidy_listings %&gt;%
+<pre class="r"><code># tidy_listings %&gt;%
   #dplyr::filter(!is.na(number_of_reviews),
          #!is.na(bathrooms),
          #!is.na(bedrooms),
@@ -195,10 +200,10 @@ tidy_listings &lt;- tidy_listings %&gt;%
   theme_minimal() 
 
 ggpairs1</code></pre>
-<p><img src="index_files/figure-html/unnamed-chunk-7-1.png" width="100%" style="display: block; margin: auto;" /></p>
+<p><img src="index_files/figure-html/unnamed-chunk-7-1.png" width="125%" style="display: block; margin: auto;" /></p>
 </div>
-<div id="boxplot-of-prices-across-selected-neighbourhoods" class="section level3">
-<h3>Boxplot of prices across selected neighbourhoods</h3>
+<div id="central-mexico-city-is-for-the-rich" class="section level3">
+<h3>Central Mexico City is for the rich</h3>
 <pre class="r"><code>ggplot(tidy_listings, aes(x = reorder(neighbourhood_simplified, price),
                           y = price, 
                           fill = neighbourhood_simplified)) +
@@ -214,7 +219,9 @@ ggpairs1</code></pre>
   theme(axis.text.x=element_blank(), axis.ticks.x=element_blank())</code></pre>
 <p><img src="index_files/figure-html/unnamed-chunk-8-1.png" width="1248" style="display: block; margin: auto;" />
 It is evident and logical that the most central areas such as Miguel Hidalgo, and Cuauhtemoc Alvaro Obregon of Mexico City are the most high-priced too.</p>
-<p>###Boxplot of prices across selected types of properties</p>
+</div>
+<div id="everyone-dreams-about-a-loft-in-mexico-city" class="section level3">
+<h3>Everyone dreams about a loft in Mexico City</h3>
 <pre class="r"><code>prop_plot &lt;- tidy_listings  %&gt;%
   filter(price &lt;= 2000)
 
@@ -231,11 +238,11 @@ ggplot(prop_plot, aes(reorder(x = prop_type_simplified, price),
   scale_fill_discrete(name = &quot;Property type&quot;) +
   theme(axis.text.x=element_blank(), axis.ticks.x=element_blank())</code></pre>
 <p><img src="index_files/figure-html/unnamed-chunk-9-1.png" width="1248" style="display: block; margin: auto;" />
-On average, Lofts and Condominia are the most exclusive kinds of property where a couple could stay for a few night in Mexico City.
+On average, lofts and condominia are the most exclusive kinds of property where a couple could stay for a few night in Mexico City.
 However, there are a lot of outliers across all the categories considered that may confuse the analysis.</p>
 </div>
-<div id="total-number-of-rooms-by-most-common-type" class="section level3">
-<h3>Total number of rooms by most common type</h3>
+<div id="couples-seek-the-right-intimacy-in-mexico-city" class="section level3">
+<h3>Couples seek the right intimacy in Mexico City</h3>
 <pre class="r"><code>Bar_chart &lt;- tidy_listings %&gt;%
    mutate(&#39;room_type&#39; = factor(`room_type`, levels = c(&quot;Hotel room&quot;,
                                                        &quot;Shared room&quot;,
@@ -256,8 +263,8 @@ ggplot(Bar_chart, aes(x= room_type,
 <p><img src="index_files/figure-html/unnamed-chunk-10-1.png" width="648" style="display: block; margin: auto;" />
 The vast majority of habitations offered in Mexico City are either a private room or an entire home/apartment.</p>
 </div>
-<div id="boxplot-of-prices-for-superhosts-and-normal-hosts" class="section level3">
-<h3>Boxplot of prices for superhosts and normal hosts</h3>
+<div id="superhost-can-be-super-expensive" class="section level3">
+<h3>Superhost can be super… expensive</h3>
 <pre class="r"><code>ggplot(tidy_listings, aes(x = host_is_superhost,
                           y = price,
                           fill = host_is_superhost)) +
@@ -283,31 +290,32 @@ Therefore, we run a correlation test to check it.</p>
   geom_point() + 
   labs(x = &quot;Number of reviews (#)&quot;,
        y = &quot;Price per night (MXN $)&quot;) +
-  theme_bw()
-
-ggplot(tidy_listings, aes(x = number_of_reviews)) +
+  theme_bw()</code></pre>
+<p><img src="index_files/figure-html/unnamed-chunk-12-1.png" width="648" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>ggplot(tidy_listings, aes(x = number_of_reviews)) +
   geom_density() + 
   labs(x = &quot;Number of reviews (#)&quot;,
        y = &quot;Density&quot;) +
-  theme_bw()
-
-cor(tidy_listings$number_of_reviews, tidy_listings$price,
-    use = &quot;complete.obs&quot;)
-
-tidy_review &lt;- tidy_listings %&gt;% 
+  theme_bw()</code></pre>
+<p><img src="index_files/figure-html/unnamed-chunk-12-2.png" width="648" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>cor(tidy_listings$number_of_reviews, tidy_listings$price,
+    use = &quot;complete.obs&quot;)</code></pre>
+<pre><code>## [1] 0.103</code></pre>
+<pre class="r"><code>tidy_review &lt;- tidy_listings %&gt;% 
   filter(number_of_reviews &lt;= 20)
 ggplot(tidy_review, aes(x= number_of_reviews,
                         y= price)) +
   geom_point() + 
   labs(x = &quot;Number of reviews (#)&quot;,
        y = &quot;Price per night (MXN $)&quot;) +
-  theme_bw()
-
-cor(tidy_review$number_of_reviews, tidy_review$price,
+  theme_bw()</code></pre>
+<p><img src="index_files/figure-html/unnamed-chunk-12-3.png" width="648" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>cor(tidy_review$number_of_reviews, tidy_review$price,
     use = &quot;complete.obs&quot;)</code></pre>
+<pre><code>## [1] 0.0354</code></pre>
 </div>
-<div id="distribution-of-cleaning-fee-charge" class="section level3">
-<h3>Distribution of cleaning fee charge</h3>
+<div id="most-hosts-dont-charge-extra-for-cleaning" class="section level3">
+<h3>Most hosts don’t charge extra for cleaning</h3>
 <pre class="r"><code>cleaning_hist &lt;- tidy_listings %&gt;%  filter(cleaning_fee &lt;= 1000) 
 
 
@@ -323,8 +331,8 @@ ggplot(cleaning_hist, aes(x= cleaning_fee)) +
 <p><img src="index_files/figure-html/unnamed-chunk-13-1.png" width="648" style="display: block; margin: auto;" />
 We have filtered out hosts that apply cleaning fees above $1,000 as they are outliers.</p>
 </div>
-<div id="number-of-guests-included-in-the-abitation" class="section level3">
-<h3>Number of guests included in the abitation</h3>
+<div id="sometimes-not-everyone-is-welcome" class="section level3">
+<h3>Sometimes not everyone is welcome</h3>
 <pre class="r"><code>ggplot(tidy_listings, aes(x= guests_included,
                           y= price),
        fill = guests_included) +
@@ -526,7 +534,7 @@ huxreg(final_1)</code></pre>
 ## is_location_exact        1.02  1            1.01
 ## cancellation_policy      1.17  4            1.02
 ## host_identity_verified   1.06  1            1.03</code></pre>
-<p>We fit our first regression model using 12 different independent variables. Seen from the statistics, R2 of the model is great with a value of 0.471 but this model has too many variables and some of which are not that significant so we will delete the one with the largest p value which is cancellation policy.</p>
+<p>Seen from the statistics, R2 of the model is great with a value of 0.423 but this model has too many variables and some of which are not that significant so we will delete the one with the largest p value which is cancellation policy.</p>
 <pre class="r"><code>final_2 &lt;- lm(log_price_4_nights ~ guests_included + amenities_clean + host_is_superhost + neighbourhood_simplified + room_type + prop_type_simplified + bathrooms + bedrooms + beds + is_location_exact + host_identity_verified, data = tidy_listings)
 
 huxreg(final_2)</code></pre>
@@ -642,7 +650,8 @@ huxreg(final_2)</code></pre>
 ## beds                     2.12  1            1.46
 ## is_location_exact        1.02  1            1.01
 ## host_identity_verified   1.05  1            1.02</code></pre>
-<p>We then fit the model with other 11 variables and this model gives us a R2 of 0.468 which is pretty close to before. Thus, we are pretty confident that concellation policy does not have a significant effect on the price_4_night. Then, we continue to delete variables guests_included, amenities_clean, and beds which has largest p value.</p>
+<p>We then fit the model with other 11 variables and this model gives us a R2 of 0.422 which is pretty close to before. Thus, we are pretty confident that cancellation policy does not have a significant effect on the price_4_night.
+Therefore, we continue to delete variables guests_included, amenities_clean, and beds which has largest p value.</p>
 <p>We ran the model again with 8 variables but realised we had to further eliminate some independent variables to bring the AIC down.</p>
 <pre class="r"><code>final_3 &lt;- lm(log_price_4_nights ~ host_is_superhost + neighbourhood_simplified + room_type + prop_type_simplified + bathrooms + bedrooms + is_location_exact + host_identity_verified, data = tidy_listings)
 
@@ -744,7 +753,7 @@ huxreg(final_3)</code></pre>
 ## bedrooms                 2.42  1            1.56
 ## is_location_exact        1.02  1            1.01
 ## host_identity_verified   1.03  1            1.01</code></pre>
-<p>We once again fit the model with other 8 variables and this model gives us a R2 of 0.446 and as we can tell, there are still too many variables in the model.</p>
+<p>We once again fit the model with other 8 variables and this model gives us a R2 of 0.407 and as we can tell, there are still too many variables in the model.</p>
 <pre class="r"><code>final_4 &lt;- lm(log_price_4_nights ~ neighbourhood_simplified + room_type + bathrooms + bedrooms, data = tidy_listings)
 
 huxreg(final_4)</code></pre>
@@ -845,7 +854,7 @@ huxreg(final_4)</code></pre>
 ##   (44 observations deleted due to missingness)
 ## Multiple R-squared:  0.402,  Adjusted R-squared:  0.401 
 ## F-statistic: 1.21e+03 on 10 and 18058 DF,  p-value: &lt;2e-16</code></pre>
-<p>For our final model, we take out is_location_exact, host_is_superhost,and host_identity-verified and the R2 is 0.439.</p>
+<p>For our final model, we take out is_location_exact, host_is_superhost,and host_identity-verified and the R2 is 0.402.</p>
 <pre class="r"><code>target_listings &lt;- tidy_listings %&gt;%
 dplyr::filter(number_of_reviews &gt; 15,
          review_scores_rating &gt; 95,
@@ -900,7 +909,14 @@ model2</code></pre>
 ##                           9.637                         -565.933  
 ##           room_typePrivate room             room_typeShared room  
 ##                       -2855.795                        -3492.220</code></pre>
-<p>For each increase in review_scores_rating, the price of two people for 4 nights will increase by 10.24. If the property type is condominium, the price of 2 people for 4 nights will increase by 229.18; if the property type is house, the price of 2 people for 4 nights will decrease by 1322.8;If the property type is loft, the price of 2 people for 4 nights will increase by 180.51; If the property type is other, the price of 2 people for 4 nights will decrease by 425.48.</p>
+<p>For each increase in review_scores_rating, the price of two people for 4 nights will increase by 10.55.</p>
+<p>Furthermore, we notice the following change in prices according to the property type:</p>
+<ul>
+<li>if the property type is condominium, the price of two people for 4 nights will increase by 240.0</li>
+<li>if the property type is house, the price of two people for 4 nights will decrease by 1318.3</li>
+<li>if the property type is loft, the price of two people for 4 nights will increase by 178.8</li>
+<li>if the property type is other, the price of two people for 4 nights will decrease by 422.6</li>
+</ul>
 </div>
 <div id="outcomes-and-concerns" class="section level1">
 <h1>Outcomes and concerns</h1>

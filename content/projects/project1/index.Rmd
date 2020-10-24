@@ -32,18 +32,19 @@ knitr::opts_chunk$set(
 Using Airbnb data, we created a model with the aim to analyse data about Airbnb listings and **predict the total cost for two people staying four nights in Mexico city**.
 
 To create a successful model we had to:
+
 - Apply data-cleaning techniques to extract data from Airbnb list and create a dataset.
 - Use descriptive statistics to conduct data modification and relevant analysis.
-- Apply multi-regression modeling to visualize and analyze the data that we have collected.
+Apply multi-regression modeling to visualize and analyze the data that we have collected.
 
 Our final model takes into consideration the:
+
 - Neighbourhood
 - Room type
 - N. of bathrooms
-- N. of bedrooms .
+- N. of bedrooms
 
-The model predicts that an apartment with a private room in Tlalpan (M.C.) which has over 15 reviews and an average
-review score above 95/100 will cost, on average, 2,063 MXN $ with a 95% confidence interval ranging from 2,035 to 2,090.
+The model predicts that an apartment with a private room in the neighbourhoood of Tlalpan, Mexico City, which has over 15 reviews and an average review score above 95/100 will cost, on average, 2,063 MXN$ with a 95% confidence interval ranging from 2,035 to 2,090.
 
 ```{r load-libraries, warning=FALSE, message=FALSE, echo=FALSE}
 # Loading all libraries
@@ -88,7 +89,8 @@ In the original data set, we collected **21,824** values across **106 variables*
 
 Thus, we first applied glimpse and skim to look through the data set and chose what we believe could be used in the later analysis stage.
 
-Glimpse and skim are two of my favourite functions (others being *table*, *favstats*, and *summary*) allow us to understand better the dataset we are working with,
+Glimpse and skim are two of my favourite functions (others being *table*, *favstats*, and *summary*) allow us to understand better the dataset we are working with:
+
 - **Glimpse** gives us a summary of the variables and observations included.
 - **Skim** provides us with useful information concerning the missing data, a.k.a. NAs
 
@@ -106,7 +108,7 @@ dplyr::select(host_is_superhost, neighbourhood_cleansed, latitude, longitude, is
 
 ```
 
-Looking through the raw data set, we will drop variable **square_feet** because most airbnb houses (21,758) do not provide it so it will not be a meaningful predictive variable and a large amount of NA values will influence our analysis later.
+Looking through the raw data set, we will drop variable **square_feet** because most airbnb houses (21,758) do not provide it, so it will not be a meaningful predictive variable and a large amount of NA values will influence our analysis later.
 
 ```{r}
 tidy_listings <- tidy_listings %>% 
@@ -124,9 +126,9 @@ Besides, **amenities** are in lists right now which could not be used to predict
 
 Since the vast majority of the observations in the data are one of the top four or five **property types**, we would like to create a simplified version of property_type variable that has five categories: the top four categories and Other.
 
-Moreover, as we only care about houses that offer four-night renting, we filter data set to only include **minimum nights** less than or equal to 4 nights.
+Moreover, as we only care about houses that offer four-night renting, we filter data set to only include **minimum nights** less than or equal to four nights.
 
-Lastly, We also create a new variable named **price_4_nights** to calculate the total cost for two people to stay at the Airbnb property for 4 nights.
+Lastly, We also create a new variable named **price_4_nights** to calculate the total cost for two people to stay at the Airbnb property for four nights.
 
 ```{r datamanipulation1}
 ### Changing characters variables to numerical ones
@@ -207,8 +209,9 @@ We fond out that the **correlation** between **review score** and **price** is o
 Let us drop all the rows which include NA values in our data set.
 
 The point is that we cannot keep missing observations because they will mess up our regressions later in the analysis.
+
 ```{r}
-#tidy_listings %>%
+# tidy_listings %>%
   #dplyr::filter(!is.na(number_of_reviews),
          #!is.na(bathrooms),
          #!is.na(bedrooms),
@@ -236,7 +239,6 @@ My favourite part comes with nice plots and graphs about different variables for
 summary(tidy_listings$price)
 ggplot(tidy_listings, aes(x=price)) +
   geom_density()
-
 ```
 From summary statistics and distribution, we find out that the median of price is 747 but the maximum is 349,990 which does not make sense and the distribution is highly right-skewed.
 
@@ -265,7 +267,8 @@ Then, we plot out the density plot of price_4_nights and find out that the distr
 
 ### General overview
 We use the function GGally::ggpairs() to grab anb overview of the distributions and correlations in our dataset.
-```{r, fig.width=27, fig.height=27, out.width="100%"}
+
+```{r, fig.width=25, fig.height=25, out.width="125%"}
 
 ggpairs1 <- tidy_listings %>%
  dplyr::select( price, cleaning_fee, extra_people, number_of_reviews,
@@ -281,10 +284,10 @@ ggpairs1 <- tidy_listings %>%
   theme_minimal() 
 
 ggpairs1
-
 ```
 
-### Boxplot of prices across selected neighbourhoods
+### Central Mexico City is for the rich
+
 ```{r, fig.width=13}
 
 ggplot(tidy_listings, aes(x = reorder(neighbourhood_simplified, price),
@@ -304,7 +307,7 @@ ggplot(tidy_listings, aes(x = reorder(neighbourhood_simplified, price),
 ```
 It is evident and logical that the most central areas such as Miguel Hidalgo, and Cuauhtemoc Alvaro Obregon of Mexico City are the most high-priced too.
 
-###Boxplot of prices across selected types of properties
+### Everyone dreams about a loft in Mexico City
 ```{r, fig.width=13}
 prop_plot <- tidy_listings  %>%
   filter(price <= 2000)
@@ -323,10 +326,10 @@ ggplot(prop_plot, aes(reorder(x = prop_type_simplified, price),
   theme(axis.text.x=element_blank(), axis.ticks.x=element_blank())
 
 ```
-On average, Lofts and Condominia are the most exclusive kinds of property where a couple could stay for a few night in Mexico City.
+On average, lofts and condominia are the most exclusive kinds of property where a couple could stay for a few night in Mexico City.
 However, there are a lot of outliers across all the categories considered that may confuse the analysis.
 
-### Total number of rooms by most common type
+### Couples seek the right intimacy in Mexico City
 ```{r}
 
 Bar_chart <- tidy_listings %>%
@@ -350,7 +353,7 @@ ggplot(Bar_chart, aes(x= room_type,
 ```
 The vast majority of habitations offered in Mexico City are either a private room or an entire home/apartment.
 
-### Boxplot of prices for superhosts and normal hosts
+### Superhost can be super... expensive
 ```{r}
 ggplot(tidy_listings, aes(x = host_is_superhost,
                           y = price,
@@ -372,7 +375,7 @@ From the scatterplot, we can notice a low correlation between the two variables.
 The distribution suggests us that the mean is close to 0.
 Therefore, we run a correlation test to check it.
 
-```{r, eval = FALSE}
+```{r}
 ggplot(tidy_listings, aes(x= number_of_reviews,
                           y= price)) +
   geom_point() + 
@@ -403,7 +406,8 @@ cor(tidy_review$number_of_reviews, tidy_review$price,
 
 ```
 
-### Distribution of cleaning fee charge
+### Most hosts don't charge extra for cleaning
+
 ```{r}
 cleaning_hist <- tidy_listings %>%  filter(cleaning_fee <= 1000) 
 
@@ -421,7 +425,7 @@ ggplot(cleaning_hist, aes(x= cleaning_fee)) +
 ```
 We have filtered out hosts that apply cleaning fees above $1,000 as they are outliers.
 
-### Number of guests included in the abitation
+### Sometimes not everyone is welcome
 ```{r}
 ggplot(tidy_listings, aes(x= guests_included,
                           y= price),
@@ -447,6 +451,7 @@ cor(tidy_listings$guests_included, tidy_listings$price,
 The vast majority of the properties offered are meant to host only one guest and will charge a fee for any extra person.
 
 ### Superhosts provide greater amenities
+
 ```{r}
 ggplot(tidy_listings, aes(x = amenities_clean,
                             y = price)) +
@@ -472,7 +477,6 @@ ggplot(tidy_listings, aes(x = amenities_clean,
 On average superhosts provide more amenities and this is consistent across all the selected neighbourhoods.
 
 # Mapping
-
 Another fun part: displaying the housing offer in Mexico City on a map!
 
 ```{r airbnbmapping}
@@ -501,7 +505,7 @@ huxreg(final_1)
 car::vif(final_1)
 
 ```
-We fit our first regression model using 12 different independent variables. Seen from the statistics, R2 of the model is great with a value of 0.471 but this model has too many variables and some of which are not that significant so we will delete the one with the largest p value which is cancellation policy.
+Seen from the statistics, R2 of the model is great with a value of 0.423 but this model has too many variables and some of which are not that significant so we will delete the one with the largest p value which is cancellation policy.
 
 ```{r}
 
@@ -511,7 +515,8 @@ huxreg(final_2)
 
 car::vif(final_2)
 ```
-We then fit the model with other 11 variables and this model gives us a R2 of 0.468 which is pretty close to before. Thus, we are pretty confident that concellation policy does not have a significant effect on the price_4_night. Then, we continue to delete variables guests_included, amenities_clean, and beds which has largest p value.  
+We then fit the model with other 11 variables and this model gives us a R2 of 0.422 which is pretty close to before. Thus, we are pretty confident that cancellation policy does not have a significant effect on the price_4_night.
+Therefore, we continue to delete variables guests_included, amenities_clean, and beds which has largest p value.  
 
 We ran the model again with 8 variables but realised we had to further eliminate some independent variables to bring the AIC down.
 ```{r}
@@ -521,7 +526,7 @@ huxreg(final_3)
 
 car::vif(final_3)
 ```
-We once again fit the model with other 8 variables and this model gives us a R2 of 0.446 and as we can tell, there are still too many variables in the model.
+We once again fit the model with other 8 variables and this model gives us a R2 of 0.407 and as we can tell, there are still too many variables in the model.
 
 
 ```{r}
@@ -536,7 +541,7 @@ autoplot(final_4)
 summary(final_4)
 ```
 
-For our final model, we take out is_location_exact, host_is_superhost,and host_identity-verified and the R2 is 0.439.
+For our final model, we take out is_location_exact, host_is_superhost,and host_identity-verified and the R2 is 0.402.
 
 ```{r}
 target_listings <- tidy_listings %>%
@@ -566,9 +571,17 @@ model1
 model2 <- lm(price_4_nights ~ prop_type_simplified + number_of_reviews + review_scores_rating + room_type, data = tidy_listings)
 model2
 ```
-For each increase in review_scores_rating, the price of two people for 4 nights will increase by 10.24. If the property type is condominium, the price of 2 people for 4 nights will increase by 229.18; if the property type is house, the price of 2 people for 4 nights will decrease by 1322.8;If the property type is loft, the price of 2 people for 4 nights will increase by 180.51; If the property type is other, the price of 2 people for 4 nights will decrease by 425.48.
+For each increase in review_scores_rating, the price of two people for 4 nights will increase by 10.55.
+
+Furthermore, we notice the following change in prices according to the property type:
+
+- if the property type is condominium, the price of two people for 4 nights will increase by 240.0
+- if the property type is house, the price of two people for 4 nights will decrease by 1318.3
+- if the property type is loft, the price of two people for 4 nights will increase by 178.8
+- if the property type is other, the price of two people for 4 nights will decrease by 422.6
 
 # Outcomes and concerns
+
 - To check that our results were valid we searched Airbnb to find out the rough cost of two people staying four nights in Tlalpan (Mexico City) the results showed an average price of 2,100 MXN$ which is comparable our findings .
 
 - Our model is rather limited in its use as it focuses on Mexico City alone to make this a general model we would need Airbnb data from around the world.
