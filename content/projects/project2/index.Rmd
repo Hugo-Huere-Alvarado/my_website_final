@@ -56,7 +56,9 @@ library(gridExtra)
 ```
 
 
-In this project, we will take a look at how COVID-19 death rates are affected by variables such as gender, age, co-morbidities and whether the patient has been admitted to the ICU. For this purpose I will create two graphs:
+In this project, we will take a look at how COVID-19 death rates are affected by variables such as gender, age, co-morbidities and whether the patient has been admitted to the ICU.
+
+For this purpose I will create two graphs:
 
 1) By age group, sex, and whether the patient had co-morbidities or not
 
@@ -65,6 +67,7 @@ In this project, we will take a look at how COVID-19 death rates are affected by
 We will use a loop to perform our analysis in an efficient and fast way.
 
 IMPORTANT:
+
 - The original source can be found at the following link: https://data.cdc.gov/api/views/vbim-akqf/rows.csv?accessType=DOWNLOAD
 - The data is provided only for the USA, and is constantly updated
 - This work was last time performed on 22/10/2020 at 23:10 UK time (n. observations: 4.48m , size: 462Mb)
